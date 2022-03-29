@@ -1,0 +1,34 @@
+{
+	"id": "hyperionNG",
+	"name": "Hyperion NG",
+	"description": {
+		"fr_FR": "Plugin pour contrôler un ou plusieurs serveurs Hyperion NG",
+		"en_US": "Plugin to control one or more Hyperion NG servers"
+	},
+	"licence": "AGPL",
+	"author": "Spine",
+	"require": "4.1",
+	"category": "multimedia",
+	"hasDependency": false,
+	"hasOwnDeamon": false,
+	"maxDependancyInstallTime": 0,
+	"changelog": "https://spine34.github.io/jeedom-plugin-hyperionNG/#language#/changelog",
+	"documentation": "https://spine34.github.io/jeedom-plugin-hyperionNG/#language#/",
+	"link": {
+		"forum": "Lien vers le forum",
+		"video": "Lien vers une video"
+	},
+	"language": [
+		"fr_FR",
+		"en_US"
+	],
+	"compatibility": [
+		"miniplus",
+		"smart",
+		"rpi",
+		"docker",
+		"diy",
+		"mobile",
+		"v4"
+	]
+}
