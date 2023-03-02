@@ -220,7 +220,7 @@ class hyperionNG extends eqLogic
 			$cmd = $this->getCmd(null, $command['logicalId']);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Command [' . $command['name'] . '] created');
-				$cmd = (new speedtestByOoklaCmd);
+				$cmd = (new hyperionNGCmd);
 				$cmd->setEqLogic_id($this->getId());
 				$cmd->setName($command['name']);
 				$cmd->setLogicalId($command['logicalId']);
@@ -374,7 +374,7 @@ class hyperionNG extends eqLogic
 	/*     * **********************Getteur Setteur*************************** */
 }
 
-class hyperionNG extends cmd
+class hyperionNGCmd extends cmd
 {
 	/*     * *************************Attributs****************************** */
 
