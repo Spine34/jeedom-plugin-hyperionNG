@@ -17,6 +17,23 @@
 
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
+function rgb2hex($r, $g, $b)
+{
+	$r = dechex($r);
+	if (strlen($r) == 1) {
+		$r = '0' . $r;
+	}
+	$g = dechex($g);
+	if (strlen($g) == 1) {
+		$g = '0' . $g;
+	}
+	$b = dechex($b);
+	if (strlen($b) == 1) {
+		$b = '0' . $b;
+	}
+	$hex = '#' . $r . $g . $b;
+	return $hex;
+}
 
 class hyperionNG extends eqLogic
 {
@@ -151,7 +168,6 @@ class hyperionNG extends eqLogic
 					}
 				}
 				if (isset($command['value'])) {
-					// $infoCmd = $this->getCmd(null, $command['value']);
 					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
 				}
 				$cmd->save();
