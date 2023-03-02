@@ -27,55 +27,7 @@ class hyperionNG extends eqLogic
 	* Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
 	*/
 
-	// public static $_widgetPossibility = array('custom' => true);
-	public static $_widgetPossibility = array(
-		'custom' => true,
-		'parameters' => array(
-			'colorWidgetName' => array(
-				'name' => 'Couleur de la police du bandeau',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'bgWidgetName' => array(
-				'name' => 'Couleur de fond du bandeau',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'colorEqLogic' => array(
-				'name' => 'Couleur de la police',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'bgEqLogic' => array(
-				'name' => 'Couleur de fond',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'cmdName' => array(
-				'name' => 'Nom des commandes',
-				'type' => '',
-				'default' => '',
-				'allow_transparent' => false,
-				'allow_displayType' => true
-			),
-			'timeWidget' => array(
-				'name' => 'Widgets time',
-				'type' => '',
-				'default' => '',
-				'allow_transparent' => false,
-				'allow_displayType' => true
-			)
-		)
-	);
-
+	public static $_widgetPossibility = array('custom' => true);
 
 	/*
 	* Permet de crypter/décrypter automatiquement des champs de configuration du plugin
@@ -84,29 +36,6 @@ class hyperionNG extends eqLogic
 	*/
 
 	/*     * ***********************Methode static*************************** */
-
-	public static function dependancy_install()
-	{
-		log::remove(__CLASS__ . '_update');
-		return array('script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency', 'log' => log::getPathToLog(__CLASS__ . '_update'));
-	}
-
-	public static function dependancy_info()
-	{
-		$return = array();
-		$return['log'] = log::getPathToLog(__CLASS__ . '_update');
-		$return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependency';
-		if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
-			$return['state'] = 'in_progress';
-		} else {
-			if (exec(system::getCmdSudo() . system::get('cmd_check') . '-Ec "speedtest"') < 1) {
-				$return['state'] = 'nok';
-			} else {
-				$return['state'] = 'ok';
-			}
-		}
-		return $return;
-	}
 
 	public static function update()
 	{
@@ -167,23 +96,6 @@ class hyperionNG extends eqLogic
 	{
 		$this->setIsEnable(1);
 		$this->setIsVisible(1);
-		$this->setConfiguration('template', 'coreWidget');
-		$this->setDisplay('advanceWidgetParametercolorWidgetNamedashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercolorWidgetNamemobile-default', 1);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamedashboard-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamedashboard', '#26273b');
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamemobile-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamemobile', '#26273b');
-		$this->setDisplay('advanceWidgetParametercolorEqLogicdashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercolorEqLogicmobile-default', 1);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicdashboard-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicdashboard', '#141526');
-		$this->setDisplay('advanceWidgetParameterbgEqLogicmobile-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicmobile', '#141526');
-		$this->setDisplay('advanceWidgetParametercmdNamedashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercmdNamemobile-default', 1);
-		$this->setDisplay('advanceWidgetParametertimeWidgetdashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametertimeWidgetmobile-default', 1);
 	}
 
 	// Fonction exécutée automatiquement après la création de l'équipement

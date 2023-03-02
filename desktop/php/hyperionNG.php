@@ -145,31 +145,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label">{{Templates}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet d'utiliser les templates dédiés au plugin à la place des widgets core (paramètres dans Configuration avancée de l'équipement => onglet Affichage => section Widget)}}"></i></sup>
+								<label class="col-sm-4 control-label">{{Numéro de l'instance}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir le numéro de l'instance à contôler}}"></i></sup>
 								</label>
 								<div class="col-sm-6">
-									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="template">
-										<option value="coreWidget">{{Widgets core}}</option>
-										<option value="templateWithoutGauges">{{Template sans jauges}}</option>
-										<!-- <option value="templateWithoutGauges">{{Template avec jauges}}</option> -->
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">{{ID du serveur de test}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir un serveur de test spécifique (à utiliser uniquement si le serveur choisi automatiquement retourne des valeurs erronées)}}"></i></sup>
-								</label>
-								<div class="col-sm-6">
-									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="serverId">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">{{Désactiver les erreurs}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de désactiver les erreurs lorsque votre connexion internet est hors service}}"></i></sup>
-								</label>
-								<div class="col-sm-6">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="disableError">
+									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="instanceNumber">
 								</div>
 							</div>
 						</div>
@@ -182,12 +162,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<label class="col-sm-4 control-label">{{Description de l’équipement}}</label>
 								<div class="col-sm-6">
 									<textarea class="form-control eqLogicAttr autogrow" data-l1key="comment"></textarea>
-								</div>
-							</div>
-							<legend><i class="fas fa-server"></i> {{Liste des serveurs les plus proches}}</legend>
-							<div class="form-group">
-								<div class="alert alert-info col-xs-10 col-xs-offset-1">
-									<pre class="serverList" style="font-family: CamingoCode, monospace;"></pre>
 								</div>
 							</div>
 						</div>
