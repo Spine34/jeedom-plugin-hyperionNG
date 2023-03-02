@@ -142,13 +142,17 @@ class hyperionNG extends eqLogic
 				if (isset($command['unite'])) {
 					$cmd->setUnite($command['unite']);
 				}
-				if (isset($command['isHistorized'])) {
-					$cmd->setIsHistorized($command['isHistorized']);
-				}
+				// if (isset($command['isHistorized'])) {
+				// 	$cmd->setIsHistorized($command['isHistorized']);
+				// }
 				if (isset($command['configuration'])) {
 					foreach ($command['configuration'] as $key => $value) {
 						$cmd->setConfiguration($key, $value);
 					}
+				}
+				if (isset($command['value'])) {
+					// $infoCmd = $this->getCmd(null, $command['value']);
+					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
 				}
 				$cmd->save();
 			}
