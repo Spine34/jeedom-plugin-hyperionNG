@@ -176,46 +176,10 @@ class hyperionNG extends eqLogic
 	}
 	*/
 
-	// Permet de modifier l'affichage du widget (également utilisable par les commandes)
-	public function toHtml($_version = 'dashboard')
-	{
-		if ($this->getConfiguration('template') == 'coreWidget') {
-			return parent::toHtml($_version);
-		}
-		$replace = $this->preToHtml($_version);
-		if (!is_array($replace)) {
-			return $replace;
-		}
-		$version = jeedom::versionAlias($_version);
-		foreach (($this->getCmd('info')) as $cmd) {
-			$logical = $cmd->getLogicalId();
-			$replace['#' . $logical . '_Id#'] = $cmd->getId();
-			if ($logical == 'server') {
-				$server = str_replace(' - ', '<br>', $cmd->execCmd());
-				$servers = explode('(', $server);
-				$server = rtrim($servers[0]);
-				$replace['#' . $logical . '_Value#'] = $server;
-			} else {
-				$replace['#' . $logical . '_Value#'] = $cmd->execCmd();
-			}
-			$replace['#' . $logical . '_ValueDate#'] = $cmd->getValueDate();
-			$replace['#' . $logical . '_CollectDate#'] = $cmd->getCollectDate();
-			$replace['#' . $logical . '_Unite#'] = $cmd->getUnite();
-			$replace['#' . $logical . '_Name#'] = $cmd->getName();
-		}
-		if ($version == 'dashboard') {
-			$replace['#cmdName#'] = $this->getDisplay('advanceWidgetParametercmdNamedashboard-default');
-			$replace['#timeWidget#'] = $this->getDisplay('advanceWidgetParametertimeWidgetdashboard-default');
-		} else {
-			$replace['#cmdName#'] = $this->getDisplay('advanceWidgetParametercmdNamemobile-default');
-			$replace['#timeWidget#'] = $this->getDisplay('advanceWidgetParametertimeWidgetmobile-default');
-		}
-		$html = template_replace($replace, getTemplate('core', $version, 'speedtestByOoklaWithoutGauges', __CLASS__));
-		$html = translate::exec($html, 'plugins/speedtestByOokla/core/template/' . $version . '/speedtestByOoklaWithoutGauges.html');
-		$html = $this->postToHtml($_version, $html);
-		return $html;
-		// return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'speedtestByOoklaWithoutGauges', __CLASS__)));
-	}
+	/*
+	* Permet de modifier l'affichage du widget (également utilisable par les commandes)
+	public function toHtml($_version = 'dashboard') {}
+	*/
 
 	/*
 	* Permet de déclencher une action avant modification d'une variable de configuration du plugin
