@@ -1,0 +1,235 @@
+[
+	{
+		"name": "Refresh",
+		"logicalId": "refresh",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Etat connexion",
+		"logicalId": "connectionState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat couleur",
+		"logicalId": "colorState",
+		"type": "info",
+		"subType": "string"
+	},
+	{
+		"name": "Etat luminosité",
+		"logicalId": "brightnessState",
+		"type": "info",
+		"subType": "string",
+		"unite": "%"
+	},
+	{
+		"name": "Etat rétroéclairage",
+		"logicalId": "backlightThresholdState",
+		"type": "info",
+		"subType": "string",
+		"unite": "%"
+	},
+	{
+		"name": "Etat effet",
+		"logicalId": "effectState",
+		"type": "info",
+		"subType": "string"
+	},
+	{
+		"name": "Etat Hyperion",
+		"logicalId": "hyperionState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat fondu",
+		"logicalId": "smoothingState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat détection des bordures noir",
+		"logicalId": "blackBorderState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat transfert",
+		"logicalId": "forwarderState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat serveur Boblight",
+		"logicalId": "boblightServerState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat platforme de capture",
+		"logicalId": "grabberState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat capture par USB",
+		"logicalId": "v4lState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Etat équipement LED",
+		"logicalId": "ledDeviceState",
+		"type": "info",
+		"subType": "binary"
+	},
+	{
+		"name": "Couleur",
+		"logicalId": "color",
+		"type": "action",
+		"subType": "color"
+	},
+	{
+		"name": "Luminosité",
+		"logicalId": "brightness",
+		"type": "action",
+		"subType": "slider"
+	},
+	{
+		"name": "Rétroéclairage",
+		"logicalId": "backlightThreshold",
+		"type": "action",
+		"subType": "slider"
+	},
+	{
+		"name": "Effets fournis",
+		"logicalId": "providedEffects",
+		"type": "action",
+		"subType": "select",
+		"configuration": {
+			"listValue": "Aucun|Aucun;Atomic swirl|Atomic swirl;Blue mood blobs|Blue mood blobs;Breath|Breath;Candle|Candle;Cinema brighten lights|Cinema brighten lights;Cinema dim lights|Cinema dim lights;Cold mood blobs|Cold mood blobs;Collision|Collision;Color traces|Color traces;Double swirl|Double swirl;Fire|Fire;Flags Germany/Sweden|Flags Germany/Sweden;Full color mood blobs|Full color mood blobs;Green mood blobs|Green mood blobs;Knight rider|Knight rider;Led Test|Led Test;Light clock|Light clock;Lights|Lights;Notify blue|Notify blue;Pac-Man|Pac-Man;Plasma|Plasma;Police Lights Single|Police Lights Single;Police Lights Solid|Police Lights Solid;Rainbow mood|Rainbow mood;Rainbow swirl|Rainbow swirl;Rainbow swirl fast|Rainbow swirl fast;Random|Random;Red mood blobs|Red mood blobs;Sea waves|Sea waves;Snake|Snake;Sparks|Sparks;Strobe red|Strobe red;Strobe white|Strobe white;System Shutdown|System Shutdown;Trails|Trails;Trails color|Trails color;Warm mood blobs|Warm mood blobs;Waves with Color|Waves with Color;X-Mas|X-Mas"
+		}
+	},
+	{
+		"name": "Hyperion On",
+		"logicalId": "hyperionOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Hyperion Off",
+		"logicalId": "hyperionOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Fondu On",
+		"logicalId": "smoothingOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Fondu Off",
+		"logicalId": "smoothingOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Détection des bordures noir On",
+		"logicalId": "blackBorderOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Détection des bordures noir Off",
+		"logicalId": "blackBorderOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Transfert On",
+		"logicalId": "forwarderOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Transfert Off",
+		"logicalId": "forwarderOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Serveur Boblight On",
+		"logicalId": "boblightServerOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Serveur Boblight Off",
+		"logicalId": "boblightServerOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Platforme de capture On",
+		"logicalId": "grabberOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Platforme de capture Off",
+		"logicalId": "grabberOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Capture par USB On",
+		"logicalId": "v4lOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Capture par USB Off",
+		"logicalId": "v4lOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Equipement LED On",
+		"logicalId": "ledDeviceOn",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Equipement LED Off",
+		"logicalId": "ledDeviceOff",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Couleur aléatoire",
+		"logicalId": "randomColor",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Effet aléatoire",
+		"logicalId": "randomEffect",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Remise à zéro",
+		"logicalId": "reset",
+		"type": "action",
+		"subType": "other"
+	},
+	{
+		"name": "Effet utilisateur",
+		"logicalId": "userEffect",
+		"type": "action",
+		"subType": "message"
+	}
+]
