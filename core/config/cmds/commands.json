@@ -1,6 +1,6 @@
 [
 	{
-		"name": "Refresh",
+		"name": "Rafraîchir",
 		"logicalId": "refresh",
 		"type": "action",
 		"subType": "other"
