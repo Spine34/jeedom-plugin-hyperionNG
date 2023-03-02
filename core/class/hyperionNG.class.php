@@ -218,7 +218,7 @@ class hyperionNG extends eqLogic
 	}
 	*/
 
-	public function refreshData()
+	public function refreshDataOld()
 	{
 		if ($this->getIsEnable() == 1) {
 			if ($this->getConfiguration('serverId') == '') {
@@ -264,6 +264,12 @@ class hyperionNG extends eqLogic
 				$this->setConfiguration('serverList', $serverList);
 				$this->save();
 			}
+		}
+	}
+
+	public function refreshData()
+	{
+		if ($this->getIsEnable() == 1) {
 		}
 	}
 
