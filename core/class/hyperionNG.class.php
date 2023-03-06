@@ -170,6 +170,17 @@ class hyperionNG extends eqLogic
 				if (isset($command['value'])) {
 					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
 				}
+				if (isset($command['generic_type'])) {
+					$cmd->setGeneric_type($command['generic_type']);
+				}
+				if (isset($command['template'])) {
+					foreach ($command['template'] as $key => $value) {
+						$cmd->setTemplate($key, $value);
+					}
+				}
+				if (isset($command['isVisible'])) {
+					$cmd->setIsVisible($command['isVisible']);
+				}
 				$cmd->save();
 			}
 		}

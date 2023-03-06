@@ -15,14 +15,16 @@
 		"name": "Etat couleur",
 		"logicalId": "colorState",
 		"type": "info",
-		"subType": "string"
+		"subType": "string",
+		"generic_type": "LIGHT_COLOR"
 	},
 	{
 		"name": "Etat luminosité",
 		"logicalId": "brightnessState",
 		"type": "info",
 		"subType": "string",
-		"unite": "%"
+		"unite": "%",
+		"generic_type": "LIGHT_BRIGHTNESS"
 	},
 	{
 		"name": "Etat rétroéclairage",
@@ -41,63 +43,74 @@
 		"name": "Etat Hyperion",
 		"logicalId": "hyperionState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat fondu",
 		"logicalId": "smoothingState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat détection des bordures noir",
 		"logicalId": "blackBorderState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat transfert",
 		"logicalId": "forwarderState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat serveur Boblight",
 		"logicalId": "boblightServerState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat platforme de capture",
 		"logicalId": "grabberState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat capture par USB",
 		"logicalId": "v4lState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"isVisible": 1
 	},
 	{
 		"name": "Etat équipement LED",
 		"logicalId": "ledDeviceState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"generic_type": "LIGHT_STATE",
+		"isVisible": 1
 	},
 	{
 		"name": "Couleur",
 		"logicalId": "color",
 		"type": "action",
 		"subType": "color",
-		"value": "colorState"
+		"value": "colorState",
+		"generic_type": "LIGHT_SET_COLOR"
 	},
 	{
 		"name": "Luminosité",
 		"logicalId": "brightness",
 		"type": "action",
 		"subType": "slider",
-		"value": "brightnessState"
+		"value": "brightnessState",
+		"generic_type": "LIGHT_SLIDER"
 	},
 	{
 		"name": "Rétroéclairage",
@@ -121,112 +134,178 @@
 		"logicalId": "hyperionOn",
 		"type": "action",
 		"subType": "other",
-		"value": "hyperionState"
+		"value": "hyperionState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Hyperion Off",
 		"logicalId": "hyperionOff",
 		"type": "action",
 		"subType": "other",
-		"value": "hyperionState"
+		"value": "hyperionState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Fondu On",
 		"logicalId": "smoothingOn",
 		"type": "action",
 		"subType": "other",
-		"value": "smoothingState"
+		"value": "smoothingState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Fondu Off",
 		"logicalId": "smoothingOff",
 		"type": "action",
 		"subType": "other",
-		"value": "smoothingState"
+		"value": "smoothingState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Détection des bordures noir On",
 		"logicalId": "blackBorderOn",
 		"type": "action",
 		"subType": "other",
-		"value": "blackBorderState"
+		"value": "blackBorderState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Détection des bordures noir Off",
 		"logicalId": "blackBorderOff",
 		"type": "action",
 		"subType": "other",
-		"value": "blackBorderState"
+		"value": "blackBorderState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Transfert On",
 		"logicalId": "forwarderOn",
 		"type": "action",
 		"subType": "other",
-		"value": "forwarderState"
+		"value": "forwarderState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Transfert Off",
 		"logicalId": "forwarderOff",
 		"type": "action",
 		"subType": "other",
-		"value": "forwarderState"
+		"value": "forwarderState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Serveur Boblight On",
 		"logicalId": "boblightServerOn",
 		"type": "action",
 		"subType": "other",
-		"value": "boblightServerState"
+		"value": "boblightServerState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Serveur Boblight Off",
 		"logicalId": "boblightServerOff",
 		"type": "action",
 		"subType": "other",
-		"value": "boblightServerState"
+		"value": "boblightServerState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Platforme de capture On",
 		"logicalId": "grabberOn",
 		"type": "action",
 		"subType": "other",
-		"value": "grabberState"
+		"value": "grabberState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Platforme de capture Off",
 		"logicalId": "grabberOff",
 		"type": "action",
 		"subType": "other",
-		"value": "grabberState"
+		"value": "grabberState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Capture par USB On",
 		"logicalId": "v4lOn",
 		"type": "action",
 		"subType": "other",
-		"value": "v4lState"
+		"value": "v4lState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Capture par USB Off",
 		"logicalId": "v4lOff",
 		"type": "action",
 		"subType": "other",
-		"value": "v4lState"
+		"value": "v4lState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Equipement LED On",
 		"logicalId": "ledDeviceOn",
 		"type": "action",
 		"subType": "other",
-		"value": "ledDeviceState"
+		"value": "ledDeviceState",
+		"generic_type": "LIGHT_ON",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Equipement LED Off",
 		"logicalId": "ledDeviceOff",
 		"type": "action",
 		"subType": "other",
-		"value": "ledDeviceState"
+		"value": "ledDeviceState",
+		"generic_type": "LIGHT_OFF",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
 	},
 	{
 		"name": "Couleur aléatoire",
