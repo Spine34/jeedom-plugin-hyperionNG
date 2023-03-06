@@ -145,6 +145,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-4 control-label">{{Adresse IP}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir l'adresse IP du serveur à contôler}}"></i></sup>
+								</label>
+								<div class="col-sm-6">
+									<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ipAdress" style="margin-bottom: unset !important;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">{{Port JSON-RPC}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir le port JSON-RPC du serveur à contôler}}"></i></sup>
+								</label>
+								<div class="col-sm-6">
+									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="port">
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-4 control-label">{{Numéro de l'instance}}
 									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir le numéro de l'instance à contôler}}"></i></sup>
 								</label>

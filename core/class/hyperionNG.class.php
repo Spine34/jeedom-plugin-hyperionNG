@@ -113,6 +113,7 @@ class hyperionNG extends eqLogic
 	{
 		$this->setIsEnable(1);
 		$this->setIsVisible(1);
+		$this->setCategory('light', 1);
 	}
 
 	// Fonction exécutée automatiquement après la création de l'équipement
@@ -133,6 +134,12 @@ class hyperionNG extends eqLogic
 	// Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement
 	public function preSave()
 	{
+		if (empty($this->getConfiguration('port'))) {
+			$this->setConfiguration('port', 19444);
+		}
+		if (empty($this->getConfiguration('instanceNumber'))) {
+			$this->setConfiguration('instanceNumber', 0);
+		}
 	}
 
 	// Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
