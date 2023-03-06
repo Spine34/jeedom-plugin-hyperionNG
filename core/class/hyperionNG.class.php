@@ -62,7 +62,8 @@ class hyperionNG extends eqLogic
 				try {
 					$c = new Cron\CronExpression(checkAndFixCron($autorefresh), new Cron\FieldFactory);
 					if ($c->isDue()) {
-						$eqLogic->refreshData();
+						$readServerinfo = $eqLogic->socket(null, null, array('command' => 'serverinfo'));
+						$eqLogic->refreshData($readServerinfo);
 					}
 				} catch (Exception $exc) {
 					log::add(__CLASS__, 'error', $eqLogic->getHumanName() . ' : Invalid cron expression : ' . $autorefresh);
@@ -236,58 +237,101 @@ class hyperionNG extends eqLogic
 	}
 	*/
 
-	public function refreshDataOld()
+	public function socket($dataInstance, $dataCommand, $dataServerinfo)
 	{
 		if ($this->getIsEnable() == 1) {
-			if ($this->getConfiguration('serverId') == '') {
-				$cmd = 'sudo /usr/bin/speedtest --accept-license --accept-gdpr --format=json';
-			} else {
-				$cmd = 'sudo /usr/bin/speedtest --accept-license --accept-gdpr --format=json --server-id=' . $this->getConfiguration('serverId');
+			$create = socket_create(AF_INET, SOCK_STREAM, 0);
+			if ($create == false) {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_create() : ' . socket_strerror(socket_last_error()));
 			}
-			log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $cmd : ' . $cmd);
-			$speedtest = shell_exec($cmd);
-			if ($speedtest == false || $speedtest == null) {
-				$speedtest = shell_exec($cmd . ' 2>&1');
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . $speedtest);
-				$speedtests = explode("\n", rtrim($speedtest));
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtests : ' . print_r($speedtests, true));
-				foreach ($speedtests as $speedtest) {
-					if ($this->getConfiguration('disableError') != 1) {
-						log::add(__CLASS__, 'error', $this->getHumanName() . ' : Error shell_exec() : ' . $speedtest);
+			$connect = socket_connect($create, $this->getConfiguration('ipAdress'), $this->getConfiguration('port'));
+			if ($connect == false) {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_connect() : ' . socket_strerror(socket_last_error()));
+			}
+			if (!empty($dataInstance)) {
+				$encodeInstance = json_encode($dataInstance) . "\n";
+				$writeInstance = socket_write($create, $encodeInstance, strlen($encodeInstance));
+				if ($writeInstance === false) {
+					log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeInstance : ' . $encodeInstance);
+					$readInstance = socket_read($create, 128, PHP_NORMAL_READ);
+					if ($readInstance == false) {
+						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
 					} else {
-						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Error shell_exec() : ' . $speedtest);
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readInstance : ' . $readInstance);
 					}
 				}
-			} else {
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . $speedtest);
-				$speedtest = json_decode($speedtest, true);
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . print_r($speedtest, true));
-				$this->checkAndUpdateCmd('download', $speedtest['download']['bandwidth']);
-				$this->checkAndUpdateCmd('upload', $speedtest['upload']['bandwidth']);
-				$this->checkAndUpdateCmd('ping', $speedtest['ping']['latency']);
-				$this->checkAndUpdateCmd('isp', $speedtest['isp']);
-				$this->checkAndUpdateCmd('internalIp', $speedtest['interface']['internalIp']);
-				$this->checkAndUpdateCmd('externalIp', $speedtest['interface']['externalIp']);
-				$this->checkAndUpdateCmd('server', $speedtest['server']['name'] . ' - ' . $speedtest['server']['location'] . ' (id: ' . $speedtest['server']['id'] . ')');
-				$this->checkAndUpdateCmd('timestamp', date('Y-m-d H:i:s', strtotime($speedtest['timestamp'])));
-				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Updated commands');
-				$serverList = shell_exec('sudo /usr/bin/speedtest --servers');
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $serverList : ' . $serverList);
-				$serverList = str_replace('Closest servers:' . "\n" . "\n", '', $serverList);
-				$serverLists = explode("\n", rtrim($serverList));
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $serverLists : ' . print_r($serverLists, true));
-				foreach ($serverLists as $server) {
-					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $server : ' . $server);
-				}
-				$this->setConfiguration('serverList', $serverList);
-				$this->save();
 			}
+			if (!empty($dataCommand)) {
+				$encodeCommand = json_encode($dataCommand) . "\n";
+				$writeCommand = socket_write($create, $encodeCommand, strlen($encodeCommand));
+				if ($writeCommand === false) {
+					log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeCommand : ' . $encodeCommand);
+					$readCommand = socket_read($create, 128, PHP_NORMAL_READ);
+					if ($readCommand == false) {
+						log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
+					} else {
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readCommand : ' . $readCommand);
+					}
+				}
+			}
+			if (!empty($dataServerinfo)) {
+				$encodeServerinfo = json_encode($dataServerinfo) . "\n";
+				$writeServerinfo = socket_write($create, $encodeServerinfo, strlen($encodeServerinfo));
+				if ($writeServerinfo === false) {
+					log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeServerinfo : ' . $encodeServerinfo);
+					$readServerinfo = socket_read($create, 32768, PHP_NORMAL_READ);
+					if ($readServerinfo == false) {
+						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
+					} else {
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readServerinfo : ' . $readServerinfo);
+					}
+				}
+			}
+			socket_close($create);
+			return $readServerinfo;
 		}
 	}
 
-	public function refreshData()
+	public function refreshData($readServerinfo)
 	{
 		if ($this->getIsEnable() == 1) {
+			if (!empty($readServerinfo)) {
+				$decodeServerinfo = json_decode($readServerinfo, true);
+				$this->checkAndUpdateCmd('connectionState', 1);
+				$hex = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
+				if ($hex != '#000000') {
+					$this->checkAndUpdateCmd('colorState', $hex);
+				} else {
+					$this->checkAndUpdateCmd('colorState', 'Aucune');
+				}
+				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
+				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
+				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
+				if (!empty($effectState)) {
+					$this->checkAndUpdateCmd('effectState', $effectState);
+				} else {
+					$this->checkAndUpdateCmd('effectState', 'Aucun');
+				}
+				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
+				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
+				$this->checkAndUpdateCmd('blackBorderState', $decodeServerinfo['info']['components'][2]['enabled']);
+				$this->checkAndUpdateCmd('forwarderState', $decodeServerinfo['info']['components'][3]['enabled']);
+				$this->checkAndUpdateCmd('boblightServerState', $decodeServerinfo['info']['components'][4]['enabled']);
+				$this->checkAndUpdateCmd('grabberState', $decodeServerinfo['info']['components'][5]['enabled']);
+				$this->checkAndUpdateCmd('v4lState', $decodeServerinfo['info']['components'][6]['enabled']);
+				$this->checkAndUpdateCmd('audioState', $decodeServerinfo['info']['components'][7]['enabled']);
+				$this->checkAndUpdateCmd('ledDeviceState', $decodeServerinfo['info']['components'][8]['enabled']);
+				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Commandes mises à jour');
+			} else {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Echec de la connexion');
+				$this->checkAndUpdateCmd('connectionState', 0);
+			}
 		}
 	}
 
@@ -317,9 +361,107 @@ class hyperionNGCmd extends cmd
 	// Exécution d'une commande
 	public function execute($_options = array())
 	{
-		if ($this->getLogicalId() == 'refresh') {
-			$this->getEqLogic()->refreshData();
+		$dataInstance = array();
+		$dataCommand = array();
+		$dataServerinfo = array();
+		if (intval($this->getEqLogic()->getConfiguration('instanceNumber')) != 0) {
+			$dataInstance['command'] = 'instance';
+			$dataInstance['subcommand'] = 'switchTo';
+			$dataInstance['instance'] = intval($this->getEqLogic()->getConfiguration('instanceNumber'));
 		}
+		if ($this->getLogicalId() == 'color') {
+			$dataCommand['command'] = 'color';
+			$dataCommand['color'] = hex2rgb($_options['color']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'brightness') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('brightness' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'backlightThreshold') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'providedEffects') {
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $_options['select']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'hyperionOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);
+		} else if ($this->getLogicalId() == 'hyperionOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => false);
+		} else if ($this->getLogicalId() == 'smoothingOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'SMOOTHING', 'state' => true);
+		} else if ($this->getLogicalId() == 'smoothingOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'SMOOTHING', 'state' => false);
+		} else if ($this->getLogicalId() == 'blackBorderOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BLACKBORDER', 'state' => true);
+		} else if ($this->getLogicalId() == 'blackBorderOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BLACKBORDER', 'state' => false);
+		} else if ($this->getLogicalId() == 'forwarderOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'FORWARDER', 'state' => true);
+		} else if ($this->getLogicalId() == 'forwarderOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'FORWARDER', 'state' => false);
+		} else if ($this->getLogicalId() == 'boblightServerOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BOBLIGHTSERVER', 'state' => true);
+		} else if ($this->getLogicalId() == 'boblightServerOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BOBLIGHTSERVER', 'state' => false);
+		} else if ($this->getLogicalId() == 'grabberOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'GRABBER', 'state' => true);
+		} else if ($this->getLogicalId() == 'grabberOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'GRABBER', 'state' => false);
+		} else if ($this->getLogicalId() == 'v4lOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'V4L', 'state' => true);
+		} else if ($this->getLogicalId() == 'v4lOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'V4L', 'state' => false);
+		} else if ($this->getLogicalId() == 'audioOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'AUDIO', 'state' => true);
+		} else if ($this->getLogicalId() == 'audioOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'AUDIO', 'state' => false);
+		} else if ($this->getLogicalId() == 'ledDeviceOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'LEDDEVICE', 'state' => true);
+		} else if ($this->getLogicalId() == 'ledDeviceOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'LEDDEVICE', 'state' => false);
+		} else if ($this->getLogicalId() == 'randomColor') {
+			$dataCommand['command'] = 'color';
+			$dataCommand['color'] = array(rand(0, 255), rand(0, 255), rand(0, 255));
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'randomEffect') {
+			$randomEffect = array('Aucun', 'Atomic swirl', 'Blue mood blobs', 'Breath', 'Candle', 'Cinema brighten lights', 'Cinema dim lights', 'Cold mood blobs', 'Collision', 'Color traces', 'Double swirl', 'Fire', 'Flags Germany/Sweden', 'Full color mood blobs', 'Green mood blobs', 'Knight rider', 'Led Test', 'Light clock', 'Lights', 'Notify blue', 'Pac-Man', 'Plasma', 'Police Lights Single', 'Police Lights Solid', 'Rainbow mood', 'Rainbow swirl', 'Rainbow swirl fast', 'Random', 'Red mood blobs', 'Sea waves', 'Snake', 'Sparks', 'Strobe red', 'Strobe white', 'System Shutdown', 'Trails', 'Trails color', 'Warm mood blobs', 'Waves with Color', 'X-Mas');
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $randomEffect[array_rand($randomEffect)]);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'reset') {
+			$dataCommand['command'] = 'clear';
+			$dataCommand['priority'] = -1;
+		} else if ($this->getLogicalId() == 'userEffect') {
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $_options['message']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		}
+		$dataServerinfo['command'] = 'serverinfo';
+		$readServerinfo = $this->getEqLogic()->socket($dataInstance, $dataCommand, $dataServerinfo);
+		$this->getEqLogic()->refreshData($readServerinfo);
 	}
 
 	/*     * **********************Getteur Setteur*************************** */

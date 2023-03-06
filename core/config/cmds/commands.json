@@ -82,8 +82,15 @@
 		"isVisible": 1
 	},
 	{
-		"name": "Etat capture par USB",
+		"name": "Etat capture USB",
 		"logicalId": "v4lState",
+		"type": "info",
+		"subType": "binary",
+		"isVisible": 1
+	},
+	{
+		"name": "Etat capture audio",
+		"logicalId": "audioState",
 		"type": "info",
 		"subType": "binary",
 		"isVisible": 1
@@ -262,7 +269,7 @@
 		}
 	},
 	{
-		"name": "Capture par USB On",
+		"name": "Capture USB On",
 		"logicalId": "v4lOn",
 		"type": "action",
 		"subType": "other",
@@ -273,11 +280,33 @@
 		}
 	},
 	{
-		"name": "Capture par USB Off",
+		"name": "Capture USB Off",
 		"logicalId": "v4lOff",
 		"type": "action",
 		"subType": "other",
 		"value": "v4lState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
+	},
+	{
+		"name": "Capture audio On",
+		"logicalId": "audioOn",
+		"type": "action",
+		"subType": "other",
+		"value": "audioState",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		}
+	},
+	{
+		"name": "Capture audio Off",
+		"logicalId": "audioOff",
+		"type": "action",
+		"subType": "other",
+		"value": "audioState",
 		"template": {
 			"dashboard": "core::binarySwitch",
 			"mobile": "core::binarySwitch"
