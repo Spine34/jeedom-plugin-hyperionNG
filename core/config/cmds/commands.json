@@ -44,56 +44,56 @@
 		"logicalId": "hyperionState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat fondu",
 		"logicalId": "smoothingState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat détection des bordures noir",
 		"logicalId": "blackBorderState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat transfert",
 		"logicalId": "forwarderState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat serveur Boblight",
 		"logicalId": "boblightServerState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat platforme de capture",
 		"logicalId": "grabberState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat capture USB",
 		"logicalId": "v4lState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat capture audio",
 		"logicalId": "audioState",
 		"type": "info",
 		"subType": "binary",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Etat équipement LED",
@@ -101,7 +101,7 @@
 		"type": "info",
 		"subType": "binary",
 		"generic_type": "LIGHT_STATE",
-		"isVisible": 1
+		"isVisible": 0
 	},
 	{
 		"name": "Couleur",
