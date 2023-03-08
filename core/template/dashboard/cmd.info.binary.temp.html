@@ -1,0 +1,111 @@
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="binary" data-template="tmplicon" data-cmd_id="#id#"
+	data-cmd_uid="#uid#" data-version="#version#">
+	<div class="title #hide_name#">
+		<div class="cmdName">#name_display#</div>
+	</div>
+	<div class="center">
+		<div class="background">
+			<span></span>
+			<span></span>
+			<div class="tv"></div>
+			<div class="tv2"></div>
+			<div class="tv3"></div>
+		</div>
+	</div>
+	<div class="value">
+		<span class="timeCmd label label-default #history#" data-type="info"></span>
+	</div>
+	<style>
+		.background {
+			width: 100px;
+			height: 80px;
+			background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+			position: relative;
+			border-radius: 10%;
+			margin: 5px 5px 20px 5px;
+		}
+
+		.background span {
+			height: 100%;
+			width: 100%;
+			background: inherit;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 10%;
+		}
+
+		.background span:nth-child(1) {
+			filter: blur(7px);
+		}
+
+		.background span:nth-child(2) {
+			filter: blur(14px);
+		}
+
+		.tv {
+			width: 80px;
+			height: 60px;
+			background: var(--link-color);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-style: solid;
+			border-width: 5px;
+			border-color: rgb(0, 0, 0);
+		}
+
+		.tv2 {
+			width: 20px;
+			height: 10px;
+			position: absolute;
+			top: 94%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-style: solid;
+			border-width: 0 5px 0 5px;
+			border-color: rgb(0, 0, 0);
+		}
+
+		.tv3 {
+			width: 60px;
+			height: 5px;
+			background: rgb(0, 0, 0);
+			position: absolute;
+			top: 102%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		@keyframes rotate {
+			0% {
+				filter: hue-rotate(0deg);
+			}
+
+			100% {
+				filter: hue-rotate(360deg);
+			}
+		}
+	</style>
+	<script>
+		jeedom.cmd.update['#id#'] = function (_options) {
+			var cmd = $('.cmd[data-cmd_id=#id#]');
+			cmd.attr('title', '{{Date de valeur}} : ' + _options.valueDate + '<br/>{{Date de collecte}} : ' + _options.collectDate);
+			if ('#time#' == 'duration') {
+				jeedom.cmd.displayDuration(_options.valueDate, cmd.find('.timeCmd'));
+			}
+			else {
+				cmd.find('.timeCmd').parent().remove();
+			}
+			if (_options.display_value == '1') {
+				cmd.find('.background').css({ 'background': 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)', 'animation': 'rotate 1.5s linear infinite' });
+			}
+			else {
+				cmd.find('.background').css({ 'background': 'none', 'animation': 'none' });
+			}
+		}
+		jeedom.cmd.update['#id#']({ display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#' });
+	</script>
+</div>
