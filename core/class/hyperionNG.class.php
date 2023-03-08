@@ -304,11 +304,11 @@ class hyperionNG extends eqLogic
 			if (!empty($readServerinfo)) {
 				$decodeServerinfo = json_decode($readServerinfo, true);
 				$this->checkAndUpdateCmd('connectionState', 1);
-				$hex = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
-				if ($hex != '#000000') {
-					$this->checkAndUpdateCmd('colorState', $hex);
+				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
+				if (!empty($colorState)) {
+					$this->checkAndUpdateCmd('colorState', $colorState);
 				} else {
-					$this->checkAndUpdateCmd('colorState', 'Aucune');
+					$this->checkAndUpdateCmd('colorState', '#000000');
 				}
 				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
 				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);

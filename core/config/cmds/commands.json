@@ -16,7 +16,8 @@
 		"logicalId": "colorState",
 		"type": "info",
 		"subType": "string",
-		"generic_type": "LIGHT_COLOR"
+		"generic_type": "LIGHT_COLOR",
+		"isVisible": 0
 	},
 	{
 		"name": "Etat luminosité",
@@ -24,20 +25,23 @@
 		"type": "info",
 		"subType": "string",
 		"unite": "%",
-		"generic_type": "LIGHT_BRIGHTNESS"
+		"generic_type": "LIGHT_BRIGHTNESS",
+		"isVisible": 0
 	},
 	{
 		"name": "Etat rétroéclairage",
 		"logicalId": "backlightThresholdState",
 		"type": "info",
 		"subType": "string",
-		"unite": "%"
+		"unite": "%",
+		"isVisible": 0
 	},
 	{
 		"name": "Etat effet",
 		"logicalId": "effectState",
 		"type": "info",
-		"subType": "string"
+		"subType": "string",
+		"isVisible": 0
 	},
 	{
 		"name": "Etat Hyperion",
@@ -117,14 +121,22 @@
 		"type": "action",
 		"subType": "slider",
 		"value": "brightnessState",
-		"generic_type": "LIGHT_SLIDER"
+		"generic_type": "LIGHT_SLIDER",
+		"template": {
+			"dashboard": "core::value",
+			"mobile": "core::value"
+		}
 	},
 	{
 		"name": "Rétroéclairage",
 		"logicalId": "backlightThreshold",
 		"type": "action",
 		"subType": "slider",
-		"value": "backlightThresholdState"
+		"value": "backlightThresholdState",
+		"template": {
+			"dashboard": "core::value",
+			"mobile": "core::value"
+		}
 	},
 	{
 		"name": "Effets fournis",
