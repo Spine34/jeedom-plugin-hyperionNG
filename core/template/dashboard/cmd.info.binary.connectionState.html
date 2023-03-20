@@ -1,6 +1,28 @@
 <div class="cmd cmd-widget #history# connectionState pull-left" data-type="info" data-subtype="binary"
-	data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#">
 	<span class="connectionStateIcon"></span>
+	<script>
+		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				cmd.setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate)
+				if (_options.display_value == 1) {
+					cmd.querySelector('.connectionStateIcon').innerHTML = "<i class='fa fa-check'></i>"
+				} else {
+					cmd.querySelector('.connectionStateIcon').innerHTML = "<i class='fa fa-times'></i>"
+				}
+			}
+		})
+		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }])
+
+		referenceNode = document.querySelector('.cmd[data-cmd_uid="#uid#"]').closest('.eqLogic-widget').querySelector('.refresh')
+		console.log(referenceNode)
+		let node = document.querySelector('.cmd[data-cmd_uid="#uid#"]')
+		if (node.parentNode) {
+			newNode = node.parentNode.removeChild(node)
+			console.log(newNode)
+		}
+		referenceNode.parentNode.insertBefore(newNode, referenceNode)
+	</script>
 	<style>
 		.connectionState {
 			margin-top: 5px;
@@ -15,19 +37,4 @@
 			font-size: 12px;
 		}
 	</style>
-	<script>
-		jeedom.cmd.update['#id#'] = function (_options) {
-			var cmd = $('.cmd[data-cmd_uid=#uid#]');
-			cmd.attr('title', '{{Date de valeur}} : ' + _options.valueDate + '<br/>{{Date de collecte}} : ' + _options.collectDate);
-			if (_options.display_value == '1') {
-				cmd.find('.connectionStateIcon').html('<i class="fa fa-check"></i>');
-			} else {
-				cmd.find('.connectionStateIcon').html('<i class="fa fa-times"></i>');
-			}
-		}
-		jeedom.cmd.update['#id#']({ display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#' });
-
-		dest = $('.cmd[data-cmd_id=#id#]').closest('.eqLogic-widget').find('.refresh');
-		$('.cmd[data-cmd_id=#id#]').detach().insertBefore(dest);
-	</script>
 </div>

@@ -1,5 +1,5 @@
-<div class="cmd cmd-widget #history#" data-type="info" data-subtype="binary" data-template="tmplicon" data-cmd_id="#id#"
-	data-cmd_uid="#uid#" data-version="#version#">
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="binary" data-cmd_id="#id#" data-cmd_uid="#uid#"
+	data-version="#version#">
 	<div class="title #hide_name#">
 		<div class="cmdName">#name_display#</div>
 	</div>
@@ -12,9 +12,34 @@
 			<div class="tv3"></div>
 		</div>
 	</div>
-	<div class="value">
-		<span class="timeCmd label label-default #history#" data-type="info"></span>
-	</div>
+	<div class="timeCmd label label-default #history#" data-type="info"></div>
+	<script>
+		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				cmd.setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate)
+
+				// >= 4.4.0
+				// if ('#_time_widget_#' == '1' || '#time#' == 'duration' || '#time#' == 'date') {
+				// 	jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#')
+				// }
+
+				// < 4.4.0
+				let cmd2 = $('.cmd[data-cmd_id=#id#]')
+				if ('#_time_widget_#' == '1') {
+					jeedom.cmd.displayDuration(_options.valueDate, cmd2.find('.timeCmd'), '#time#')
+				} else {
+					cmd2.find('.timeCmd').parent().remove()
+				}
+
+				if (_options.display_value == 1) {
+					cmd.querySelector('.background').setAttribute('style', 'background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); animation: rotate 1.5s linear infinite')
+				} else {
+					cmd.querySelector('.background').setAttribute('style', 'background: none; animation: none')
+				}
+			}
+		})
+		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }])
+	</script>
 	<style>
 		.background {
 			width: 100px;
@@ -81,31 +106,12 @@
 
 		@keyframes rotate {
 			0% {
-				filter: hue-rotate(0deg);
+				filter: hue-rotate(360deg);
 			}
 
 			100% {
-				filter: hue-rotate(360deg);
+				filter: hue-rotate(0deg);
 			}
 		}
 	</style>
-	<script>
-		jeedom.cmd.update['#id#'] = function (_options) {
-			var cmd = $('.cmd[data-cmd_id=#id#]');
-			cmd.attr('title', '{{Date de valeur}} : ' + _options.valueDate + '<br/>{{Date de collecte}} : ' + _options.collectDate);
-			if ('#time#' == 'duration') {
-				jeedom.cmd.displayDuration(_options.valueDate, cmd.find('.timeCmd'));
-			}
-			else {
-				cmd.find('.timeCmd').parent().remove();
-			}
-			if (_options.display_value == '1') {
-				cmd.find('.background').css({ 'background': 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)', 'animation': 'rotate 1.5s linear infinite' });
-			}
-			else {
-				cmd.find('.background').css({ 'background': 'none', 'animation': 'none' });
-			}
-		}
-		jeedom.cmd.update['#id#']({ display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#' });
-	</script>
 </div>
