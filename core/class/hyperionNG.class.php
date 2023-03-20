@@ -189,6 +189,11 @@ class hyperionNG extends eqLogic
 				if (isset($command['isVisible'])) {
 					$cmd->setIsVisible($command['isVisible']);
 				}
+				if (isset($command['display'])) {
+					foreach ($command['display'] as $key => $value) {
+						$cmd->setDisplay($key, $value);
+					}
+				}
 				$cmd->save();
 			}
 		}
@@ -278,6 +283,7 @@ class hyperionNG extends eqLogic
 					}
 				}
 			}
+			sleep(1);
 			if (!empty($dataServerinfo)) {
 				$encodeServerinfo = json_encode($dataServerinfo) . "\n";
 				$writeServerinfo = socket_write($create, $encodeServerinfo, strlen($encodeServerinfo));
@@ -303,16 +309,17 @@ class hyperionNG extends eqLogic
 		if ($this->getIsEnable() == 1) {
 			if (!empty($readServerinfo)) {
 				$decodeServerinfo = json_decode($readServerinfo, true);
-				$this->checkAndUpdateCmd('connectionState', 1);
 				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
-				if (!empty($colorState)) {
-					$this->checkAndUpdateCmd('colorState', $colorState);
+				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
+				$this->checkAndUpdateCmd('connectionState', 1);
+				if ($colorState != '#000000' || !empty($effectState)) {
+					$this->checkAndUpdateCmd('ambilightState', 1);
 				} else {
-					$this->checkAndUpdateCmd('colorState', '#000000');
+					$this->checkAndUpdateCmd('ambilightState', 0);
 				}
+				$this->checkAndUpdateCmd('colorState', $colorState);
 				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
 				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
-				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
 				if (!empty($effectState)) {
 					$this->checkAndUpdateCmd('effectState', $effectState);
 				} else {
@@ -455,7 +462,7 @@ class hyperionNGCmd extends cmd
 			$dataCommand['priority'] = -1;
 		} else if ($this->getLogicalId() == 'userEffect') {
 			$dataCommand['command'] = 'effect';
-			$dataCommand['effect'] = array('name' => $_options['message']);
+			$dataCommand['effect'] = array('name' => $_options['title']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		}

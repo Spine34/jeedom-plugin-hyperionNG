@@ -17,7 +17,7 @@
 	},
 	{
 		"name": "Etat Ambilight",
-		"logicalId": "connectionState",
+		"logicalId": "ambilightState",
 		"type": "info",
 		"subType": "binary",
 		"template": {
@@ -384,6 +384,10 @@
 		"name": "Effet utilisateur",
 		"logicalId": "userEffect",
 		"type": "action",
-		"subType": "message"
+		"subType": "message",
+		"display": {
+			"title_placeholder": "Nom de l'effet",
+			"message_disable": 1
+		}
 	}
 ]
