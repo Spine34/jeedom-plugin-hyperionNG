@@ -1,0 +1,12 @@
+.connectionState {
+	margin-top: 5px;
+	position: absolute !important;
+	left: 0;
+	min-width: 12px !important;
+	margin-left: 5px;
+}
+
+.connectionState i {
+	color: var(--eqTitle-color);
+	font-size: 12px;
+}

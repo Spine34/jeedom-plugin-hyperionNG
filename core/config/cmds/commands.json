@@ -9,7 +9,21 @@
 		"name": "Etat connexion",
 		"logicalId": "connectionState",
 		"type": "info",
-		"subType": "binary"
+		"subType": "binary",
+		"template": {
+			"dashboard": "hyperionNG::connectionState",
+			"mobile": "hyperionNG::connectionState"
+		}
+	},
+	{
+		"name": "Etat Ambilight",
+		"logicalId": "connectionState",
+		"type": "info",
+		"subType": "binary",
+		"template": {
+			"dashboard": "hyperionNG::ambilightState",
+			"mobile": "hyperionNG::ambilightState"
+		}
 	},
 	{
 		"name": "Etat couleur",
