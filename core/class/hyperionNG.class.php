@@ -158,41 +158,41 @@ class hyperionNG extends eqLogic
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Command [' . $command['name'] . '] created');
 				$cmd = (new hyperionNGCmd);
-				$cmd->setEqLogic_id($this->getId());
-				$cmd->setName($command['name']);
 				$cmd->setLogicalId($command['logicalId']);
+				if (isset($command['generic_type'])) {
+					$cmd->setGeneric_type($command['generic_type']);
+				}
+				$cmd->setName($command['name']);
+				$cmd->setOrder($order++);
 				$cmd->setType($command['type']);
 				$cmd->setSubType($command['subType']);
-				$cmd->setOrder($order++);
-				if (isset($command['unite'])) {
-					$cmd->setUnite($command['unite']);
-				}
+				$cmd->setEqLogic_id($this->getId());
 				// if (isset($command['isHistorized'])) {
 				// 	$cmd->setIsHistorized($command['isHistorized']);
 				// }
+				if (isset($command['unite'])) {
+					$cmd->setUnite($command['unite']);
+				}
 				if (isset($command['configuration'])) {
 					foreach ($command['configuration'] as $key => $value) {
 						$cmd->setConfiguration($key, $value);
 					}
-				}
-				if (isset($command['value'])) {
-					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
-				}
-				if (isset($command['generic_type'])) {
-					$cmd->setGeneric_type($command['generic_type']);
 				}
 				if (isset($command['template'])) {
 					foreach ($command['template'] as $key => $value) {
 						$cmd->setTemplate($key, $value);
 					}
 				}
+				// if (isset($command['display'])) {
+				// 	foreach ($command['display'] as $key => $value) {
+				// 		$cmd->setDisplay($key, $value);
+				// 	}
+				// }
+				if (isset($command['value'])) {
+					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
+				}
 				if (isset($command['isVisible'])) {
 					$cmd->setIsVisible($command['isVisible']);
-				}
-				if (isset($command['display'])) {
-					foreach ($command['display'] as $key => $value) {
-						$cmd->setDisplay($key, $value);
-					}
 				}
 				$cmd->save();
 			}
@@ -309,6 +309,20 @@ class hyperionNG extends eqLogic
 		if ($this->getIsEnable() == 1) {
 			if (!empty($readServerinfo)) {
 				$decodeServerinfo = json_decode($readServerinfo, true);
+
+				$listValue = 'Aucun|Aucun;';
+				foreach ($decodeServerinfo['info']['effects'] as $effects) {
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects : ' . print_r($effects, true));
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'file\'] : ' . $effects['file']);
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'name\'] : ' . $effects['name']);
+					if (substr($effects['file'], 0, 1) != ':') {
+						$listValue .= $effects['name'] . '|' . $effects['name'] . ';';
+						$listValue = rtrim($listValue, ';');
+					}
+				}
+				$listValue = rtrim($listValue, ';');
+				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $listValue : ' . $listValue);
+
 				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
 				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
 				$this->checkAndUpdateCmd('connectionState', 1);
@@ -323,7 +337,7 @@ class hyperionNG extends eqLogic
 				if (!empty($effectState)) {
 					$this->checkAndUpdateCmd('effectState', $effectState);
 				} else {
-					$this->checkAndUpdateCmd('effectState', 'Aucun');
+					$this->checkAndUpdateCmd('effectState', '');
 				}
 				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
 				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
@@ -390,6 +404,11 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'providedEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'userEffect') {
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $_options['title']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'hyperionOn') {
@@ -460,11 +479,6 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'reset') {
 			$dataCommand['command'] = 'clear';
 			$dataCommand['priority'] = -1;
-		} else if ($this->getLogicalId() == 'userEffect') {
-			$dataCommand['command'] = 'effect';
-			$dataCommand['effect'] = array('name' => $_options['title']);
-			$dataCommand['priority'] = 50;
-			$dataCommand['origin'] = 'Jeedom';
 		}
 		$dataServerinfo['command'] = 'serverinfo';
 		$readServerinfo = $this->getEqLogic()->socket($dataInstance, $dataCommand, $dataServerinfo);
