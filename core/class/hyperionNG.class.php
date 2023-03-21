@@ -345,8 +345,11 @@ class hyperionNG extends eqLogic
 				$listValue = rtrim($listValue, ';');
 				// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $listValue : ' . $listValue);
 				$cmd = $this->getCmd(null, 'userEffects');
-				$cmd->setConfiguration('listValue', $listValue);
-				$cmd->save();
+				$listValueOld = $cmd->getConfiguration('listValue');
+				if ($listValue != $listValueOld) {
+					$cmd->setConfiguration('listValue', $listValue);
+					$cmd->save();
+				}
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Commandes mises à jour');
 			} else {
 				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Echec de la connexion');
