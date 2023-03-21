@@ -25,7 +25,10 @@
 			"mobile": "hyperionNG::ambilightState"
 		},
 		"display": {
-			"forceReturnLineAfter": 1
+			"forceReturnLineAfter": 1,
+			"parameters": {
+				"_time_widget_": 1
+			}
 		}
 	},
 	{
