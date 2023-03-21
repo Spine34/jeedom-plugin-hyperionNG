@@ -318,13 +318,13 @@ class hyperionNG extends eqLogic
 					$this->checkAndUpdateCmd('ambilightState', 0);
 				}
 				$this->checkAndUpdateCmd('colorState', $colorState);
-				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
-				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
 				if (!empty($effectState)) {
 					$this->checkAndUpdateCmd('effectState', $effectState);
 				} else {
 					$this->checkAndUpdateCmd('effectState', '');
 				}
+				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
+				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
 				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
 				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
 				$this->checkAndUpdateCmd('blackBorderState', $decodeServerinfo['info']['components'][2]['enabled']);
@@ -397,12 +397,6 @@ class hyperionNGCmd extends cmd
 			$dataCommand['color'] = hex2rgb($_options['color']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
-		} else if ($this->getLogicalId() == 'brightness') {
-			$dataCommand['command'] = 'adjustment';
-			$dataCommand['adjustment'] = array('brightness' => intval($_options['slider']));
-		} else if ($this->getLogicalId() == 'backlightThreshold') {
-			$dataCommand['command'] = 'adjustment';
-			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'providedEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
@@ -413,6 +407,12 @@ class hyperionNGCmd extends cmd
 			$dataCommand['effect'] = array('name' => $_options['select']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'brightness') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('brightness' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'backlightThreshold') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'hyperionOn') {
 			$dataCommand['command'] = 'componentstate';
 			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);

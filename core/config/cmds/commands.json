@@ -37,6 +37,13 @@
 		"isVisible": 0
 	},
 	{
+		"logicalId": "effectState",
+		"name": "Etat effet",
+		"type": "info",
+		"subType": "string",
+		"isVisible": 0
+	},
+	{
 		"logicalId": "brightnessState",
 		"generic_type": "LIGHT_BRIGHTNESS",
 		"name": "Etat luminosité",
@@ -51,13 +58,6 @@
 		"type": "info",
 		"subType": "string",
 		"unite": "%",
-		"isVisible": 0
-	},
-	{
-		"logicalId": "effectState",
-		"name": "Etat effet",
-		"type": "info",
-		"subType": "string",
 		"isVisible": 0
 	},
 	{
@@ -133,6 +133,23 @@
 		"value": "colorState"
 	},
 	{
+		"logicalId": "providedEffects",
+		"name": "Effets fournis",
+		"type": "action",
+		"subType": "select",
+		"configuration": {
+			"listValue": "Atomic swirl|Atomic swirl;Blue mood blobs|Blue mood blobs;Breath|Breath;Candle|Candle;Cinema brighten lights|Cinema brighten lights;Cinema dim lights|Cinema dim lights;Cold mood blobs|Cold mood blobs;Collision|Collision;Color traces|Color traces;Double swirl|Double swirl;Fire|Fire;Flags Germany/Sweden|Flags Germany/Sweden;Full color mood blobs|Full color mood blobs;Green mood blobs|Green mood blobs;Knight rider|Knight rider;Led Test|Led Test;Light clock|Light clock;Lights|Lights;Notify blue|Notify blue;Pac-Man|Pac-Man;Plasma|Plasma;Police Lights Single|Police Lights Single;Police Lights Solid|Police Lights Solid;Rainbow mood|Rainbow mood;Rainbow swirl|Rainbow swirl;Rainbow swirl fast|Rainbow swirl fast;Random|Random;Red mood blobs|Red mood blobs;Sea waves|Sea waves;Snake|Snake;Sparks|Sparks;Strobe red|Strobe red;Strobe white|Strobe white;System Shutdown|System Shutdown;Trails|Trails;Trails color|Trails color;Warm mood blobs|Warm mood blobs;Waves with Color|Waves with Color;X-Mas|X-Mas"
+		},
+		"value": "effectState"
+	},
+	{
+		"logicalId": "userEffects",
+		"name": "Effets utilisateur",
+		"type": "action",
+		"subType": "select",
+		"value": "effectState"
+	},
+	{
 		"logicalId": "brightness",
 		"generic_type": "LIGHT_SLIDER",
 		"name": "Luminosité",
@@ -154,23 +171,6 @@
 			"mobile": "core::value"
 		},
 		"value": "backlightThresholdState"
-	},
-	{
-		"logicalId": "providedEffects",
-		"name": "Effets fournis",
-		"type": "action",
-		"subType": "select",
-		"configuration": {
-			"listValue": "Atomic swirl|Atomic swirl;Blue mood blobs|Blue mood blobs;Breath|Breath;Candle|Candle;Cinema brighten lights|Cinema brighten lights;Cinema dim lights|Cinema dim lights;Cold mood blobs|Cold mood blobs;Collision|Collision;Color traces|Color traces;Double swirl|Double swirl;Fire|Fire;Flags Germany/Sweden|Flags Germany/Sweden;Full color mood blobs|Full color mood blobs;Green mood blobs|Green mood blobs;Knight rider|Knight rider;Led Test|Led Test;Light clock|Light clock;Lights|Lights;Notify blue|Notify blue;Pac-Man|Pac-Man;Plasma|Plasma;Police Lights Single|Police Lights Single;Police Lights Solid|Police Lights Solid;Rainbow mood|Rainbow mood;Rainbow swirl|Rainbow swirl;Rainbow swirl fast|Rainbow swirl fast;Random|Random;Red mood blobs|Red mood blobs;Sea waves|Sea waves;Snake|Snake;Sparks|Sparks;Strobe red|Strobe red;Strobe white|Strobe white;System Shutdown|System Shutdown;Trails|Trails;Trails color|Trails color;Warm mood blobs|Warm mood blobs;Waves with Color|Waves with Color;X-Mas|X-Mas"
-		},
-		"value": "effectState"
-	},
-	{
-		"logicalId": "userEffects",
-		"name": "Effets utilisateur",
-		"type": "action",
-		"subType": "select",
-		"value": "effectState"
 	},
 	{
 		"logicalId": "hyperionOn",
