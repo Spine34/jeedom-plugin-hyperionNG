@@ -23,6 +23,9 @@
 		"template": {
 			"dashboard": "hyperionNG::ambilightState",
 			"mobile": "hyperionNG::ambilightState"
+		},
+		"display": {
+			"forceReturnLineAfter": 1
 		}
 	},
 	{
