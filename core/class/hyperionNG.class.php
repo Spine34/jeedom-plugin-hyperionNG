@@ -309,20 +309,6 @@ class hyperionNG extends eqLogic
 		if ($this->getIsEnable() == 1) {
 			if (!empty($readServerinfo)) {
 				$decodeServerinfo = json_decode($readServerinfo, true);
-
-				$listValue = 'Aucun|Aucun;';
-				foreach ($decodeServerinfo['info']['effects'] as $effects) {
-					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects : ' . print_r($effects, true));
-					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'file\'] : ' . $effects['file']);
-					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'name\'] : ' . $effects['name']);
-					if (substr($effects['file'], 0, 1) != ':') {
-						$listValue .= $effects['name'] . '|' . $effects['name'] . ';';
-						$listValue = rtrim($listValue, ';');
-					}
-				}
-				$listValue = rtrim($listValue, ';');
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $listValue : ' . $listValue);
-
 				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
 				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
 				$this->checkAndUpdateCmd('connectionState', 1);
@@ -348,6 +334,19 @@ class hyperionNG extends eqLogic
 				$this->checkAndUpdateCmd('v4lState', $decodeServerinfo['info']['components'][6]['enabled']);
 				$this->checkAndUpdateCmd('audioState', $decodeServerinfo['info']['components'][7]['enabled']);
 				$this->checkAndUpdateCmd('ledDeviceState', $decodeServerinfo['info']['components'][8]['enabled']);
+				foreach ($decodeServerinfo['info']['effects'] as $effects) {
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects : ' . print_r($effects, true));
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'file\'] : ' . $effects['file']);
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'name\'] : ' . $effects['name']);
+					if (substr($effects['file'], 0, 1) != ':') {
+						$listValue .= $effects['name'] . '|' . $effects['name'] . ';';
+					}
+				}
+				$listValue = rtrim($listValue, ';');
+				// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $listValue : ' . $listValue);
+				$cmd = $this->getCmd(null, 'userEffects');
+				$cmd->setConfiguration('listValue', $listValue);
+				$cmd->save();
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Commandes mises à jour');
 			} else {
 				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Echec de la connexion');
@@ -406,9 +405,9 @@ class hyperionNGCmd extends cmd
 			$dataCommand['effect'] = array('name' => $_options['select']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
-		} else if ($this->getLogicalId() == 'userEffect') {
+		} else if ($this->getLogicalId() == 'userEffects') {
 			$dataCommand['command'] = 'effect';
-			$dataCommand['effect'] = array('name' => $_options['title']);
+			$dataCommand['effect'] = array('name' => $_options['select']);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'hyperionOn') {

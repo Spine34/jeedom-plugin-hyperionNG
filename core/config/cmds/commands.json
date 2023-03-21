@@ -163,8 +163,8 @@
 		"value": "effectState"
 	},
 	{
-		"logicalId": "userEffect",
-		"name": "Effet utilisateur",
+		"logicalId": "userEffects",
+		"name": "Effets utilisateur",
 		"type": "action",
 		"subType": "select",
 		"value": "effectState"
