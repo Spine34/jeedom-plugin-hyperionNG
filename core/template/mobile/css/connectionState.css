@@ -1,13 +1,10 @@
 .hyperionNG.connectionState {
-	margin-top: 5px;
+	margin-top: 2px;
 	position: absolute !important;
 	left: 0;
 
 	float: left;
-	margin-left: 5px;
-	margin-right: 3px;
-
-	min-width: 12px !important;
+	padding-left: 5px;
 }
 
 .hyperionNG.connectionState i {

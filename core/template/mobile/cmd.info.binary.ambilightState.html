@@ -1,19 +1,15 @@
-<div class="cmd cmd-widget #history# hyperionNG" data-type="info" data-subtype="binary" data-cmd_id="#id#"
-	data-cmd_uid="#uid#" data-version="#version#">
-	<link rel="stylesheet" href="plugins/hyperionNG/core/template/dashboard/css/ambilightState.css">
-	<div class="title #hide_name#">
-		<div class="cmdName">#name_display#</div>
+<div class="cmd cmd-widget hyperionNG" data-type="info" data-subtype="binary" data-cmd_id="#id#" data-cmd_uid="#uid#"
+	data-version="#version#">
+	<link rel="stylesheet" href="plugins/hyperionNG/core/template/mobile/css/ambilightState.css">
+	<div class="cmdName #hide_name#">#name_display#</div>
+	<div class="background">
+		<span></span>
+		<span></span>
+		<div class="tv"></div>
+		<div class="tv2"></div>
+		<div class="tv3"></div>
 	</div>
-	<div class="content">
-		<div class="background">
-			<span></span>
-			<span></span>
-			<div class="tv"></div>
-			<div class="tv2"></div>
-			<div class="tv3"></div>
-		</div>
-	</div>
-	<div class="timeCmd label label-default #history#" data-type="info"></div>
+	<span class="timeCmd value #history#" data-type="info"></span>
 	<script>
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
