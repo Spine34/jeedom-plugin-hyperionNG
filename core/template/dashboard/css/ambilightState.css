@@ -5,7 +5,6 @@
 .hyperionNG .background {
 	width: 80px;
 	height: 60px;
-	background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
 	position: relative;
 	border-radius: 10%;
 	margin: 5px 5px 5px 5px;
@@ -65,7 +64,7 @@
 	transform: translate(-50%, -50%);
 }
 
-@keyframes rotate {
+@keyframes hyperionNGRotate {
 	0% {
 		filter: hue-rotate(360deg);
 	}
