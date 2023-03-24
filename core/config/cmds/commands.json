@@ -353,7 +353,6 @@
 	},
 	{
 		"logicalId": "ledDeviceOn",
-		"generic_type": "LIGHT_ON",
 		"name": "Equipement LED On",
 		"type": "action",
 		"subType": "other",
@@ -365,7 +364,6 @@
 	},
 	{
 		"logicalId": "ledDeviceOff",
-		"generic_type": "LIGHT_OFF",
 		"name": "Equipement LED Off",
 		"type": "action",
 		"subType": "other",
@@ -388,7 +386,15 @@
 		"subType": "other"
 	},
 	{
+		"logicalId": "cinemaBrightenLights",
+		"generic_type": "LIGHT_ON",
+		"name": "Cinema brighten lights",
+		"type": "action",
+		"subType": "other"
+	},
+	{
 		"logicalId": "reset",
+		"generic_type": "LIGHT_OFF",
 		"name": "Remise à zéro",
 		"type": "action",
 		"subType": "other"
