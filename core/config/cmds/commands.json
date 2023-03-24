@@ -17,6 +17,7 @@
 	},
 	{
 		"logicalId": "ambilightState",
+		"generic_type": "LIGHT_STATE",
 		"name": "Etat Ambilight",
 		"type": "info",
 		"subType": "binary",
@@ -121,7 +122,6 @@
 	},
 	{
 		"logicalId": "ledDeviceState",
-		"generic_type": "LIGHT_STATE",
 		"name": "Etat équipement LED",
 		"type": "info",
 		"subType": "binary",
