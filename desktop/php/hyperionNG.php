@@ -3,7 +3,7 @@ if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
 // Déclaration des variables obligatoires
-$plugin = plugin::byId('speedtestByOokla');
+$plugin = plugin::byId('hyperionNG');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
@@ -25,10 +25,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<span>{{Configuration}}</span>
 			</div>
 		</div>
-		<legend><i class="fas fa-table"></i> {{Mes équipements Speedtest by Ookla}}</legend>
+		<legend><i class="fas fa-table"></i> {{Mes équipements Hyperion NG}}</legend>
 		<?php
 		if (count($eqLogics) == 0) {
-			echo '<br><div class="text-center" style="font-size:1.2em;font-weight:bold;">{{Aucun équipement Speedtest by Ookla trouvé, cliquer sur "Ajouter" pour commencer}}</div>';
+			echo '<br><div class="text-center" style="font-size:1.2em;font-weight:bold;">{{Aucun équipement Hyperion NG trouvé, cliquer sur "Ajouter" pour commencer}}</div>';
 		} else {
 			// Champ de recherche
 			echo '<div class="input-group" style="margin:5px;">';
@@ -145,31 +145,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label">{{Templates}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet d'utiliser les templates dédiés au plugin à la place des widgets core (paramètres dans Configuration avancée de l'équipement => onglet Affichage => section Widget)}}"></i></sup>
+								<label class="col-sm-4 control-label">{{Adresse IP}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir l'adresse IP du serveur à contôler}}"></i></sup>
 								</label>
 								<div class="col-sm-6">
-									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="template">
-										<option value="coreWidget">{{Widgets core}}</option>
-										<option value="templateWithoutGauges">{{Template sans jauges}}</option>
-										<!-- <option value="templateWithoutGauges">{{Template avec jauges}}</option> -->
-									</select>
+									<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ipAdress" style="margin-bottom: unset !important;">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label">{{ID du serveur de test}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir un serveur de test spécifique (à utiliser uniquement si le serveur choisi automatiquement retourne des valeurs erronées)}}"></i></sup>
+								<label class="col-sm-4 control-label">{{Port JSON-RPC}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir le port JSON-RPC du serveur à contôler}}"></i></sup>
 								</label>
 								<div class="col-sm-6">
-									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="serverId">
+									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="port">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label">{{Désactiver les erreurs}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de désactiver les erreurs lorsque votre connexion internet est hors service}}"></i></sup>
+								<label class="col-sm-4 control-label">{{Numéro de l'instance}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Permet de choisir le numéro de l'instance à contôler}}"></i></sup>
 								</label>
 								<div class="col-sm-6">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="disableError">
+									<input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="instanceNumber">
 								</div>
 							</div>
 						</div>
@@ -184,12 +180,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<textarea class="form-control eqLogicAttr autogrow" data-l1key="comment"></textarea>
 								</div>
 							</div>
-							<legend><i class="fas fa-server"></i> {{Liste des serveurs les plus proches}}</legend>
-							<div class="form-group">
-								<div class="alert alert-info col-xs-10 col-xs-offset-1">
-									<pre class="serverList" style="font-family: CamingoCode, monospace;"></pre>
-								</div>
-							</div>
 						</div>
 					</fieldset>
 				</form>
@@ -198,14 +188,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<!-- Onglet des commandes de l'équipement -->
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<!-- <a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a> -->
-				<br>
+				<!-- <br><br> -->
 				<div class="table-responsive">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
 								<th style="min-width:200px;width:350px;">{{Nom}}</th>
-								<!-- <th>{{Type}}</th> -->
+								<th>{{Type}}</th>
 								<th style="min-width:260px;">{{Options}}</th>
 								<th>{{Etat}}</th>
 								<th style="min-width:80px;width:200px;">{{Actions}}</th>

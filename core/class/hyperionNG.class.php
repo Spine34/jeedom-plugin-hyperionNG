@@ -17,94 +17,42 @@
 
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
+function rgb2hex($r, $g, $b)
+{
+	$r = dechex($r);
+	if (strlen($r) == 1) {
+		$r = '0' . $r;
+	}
+	$g = dechex($g);
+	if (strlen($g) == 1) {
+		$g = '0' . $g;
+	}
+	$b = dechex($b);
+	if (strlen($b) == 1) {
+		$b = '0' . $b;
+	}
+	$hex = '#' . $r . $g . $b;
+	return $hex;
+}
 
-class speedtestByOokla extends eqLogic
+class hyperionNG extends eqLogic
 {
 	/*     * *************************Attributs****************************** */
 
-	// Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
-	// Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
+	/*
+	* Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
+	* Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
+	*/
 
-	// public static $_widgetPossibility = array('custom' => true);
-	public static $_widgetPossibility = array(
-		'custom' => true,
-		'parameters' => array(
-			'colorWidgetName' => array(
-				'name' => 'Couleur de la police du bandeau',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'bgWidgetName' => array(
-				'name' => 'Couleur de fond du bandeau',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'colorEqLogic' => array(
-				'name' => 'Couleur de la police',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'bgEqLogic' => array(
-				'name' => 'Couleur de fond',
-				'type' => 'color',
-				'default' => '',
-				'allow_transparent' => true,
-				'allow_displayType' => true
-			),
-			'cmdName' => array(
-				'name' => 'Nom des commandes',
-				'type' => '',
-				'default' => '',
-				'allow_transparent' => false,
-				'allow_displayType' => true
-			),
-			'timeWidget' => array(
-				'name' => 'Widgets time',
-				'type' => '',
-				'default' => '',
-				'allow_transparent' => false,
-				'allow_displayType' => true
-			)
-		)
-	);
-
+	public static $_widgetPossibility = array('custom' => true);
 
 	/*
-  * Permet de crypter/décrypter automatiquement des champs de configuration du plugin
-  * Exemple : "param1" & "param2" seront cryptés mais pas "param3"
-  public static $_encryptConfigKey = array('param1', 'param2');
-  */
+	* Permet de crypter/décrypter automatiquement des champs de configuration du plugin
+	* Exemple : "param1" & "param2" seront cryptés mais pas "param3"
+	public static $_encryptConfigKey = array('param1', 'param2');
+	*/
 
 	/*     * ***********************Methode static*************************** */
-
-	public static function dependancy_install()
-	{
-		log::remove(__CLASS__ . '_update');
-		return array('script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency', 'log' => log::getPathToLog(__CLASS__ . '_update'));
-	}
-
-	public static function dependancy_info()
-	{
-		$return = array();
-		$return['log'] = log::getPathToLog(__CLASS__ . '_update');
-		$return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependency';
-		if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
-			$return['state'] = 'in_progress';
-		} else {
-			if (exec(system::getCmdSudo() . system::get('cmd_check') . '-Ec "speedtest"') < 1) {
-				$return['state'] = 'nok';
-			} else {
-				$return['state'] = 'ok';
-			}
-		}
-		return $return;
-	}
 
 	public static function update()
 	{
@@ -114,7 +62,8 @@ class speedtestByOokla extends eqLogic
 				try {
 					$c = new Cron\CronExpression(checkAndFixCron($autorefresh), new Cron\FieldFactory);
 					if ($c->isDue()) {
-						$eqLogic->refreshData();
+						$readServerinfo = $eqLogic->socket(null, null, array('command' => 'serverinfo'));
+						$eqLogic->refreshData($readServerinfo);
 					}
 				} catch (Exception $exc) {
 					log::add(__CLASS__, 'error', $eqLogic->getHumanName() . ' : Invalid cron expression : ' . $autorefresh);
@@ -124,39 +73,39 @@ class speedtestByOokla extends eqLogic
 	}
 
 	/*
-  * Fonction exécutée automatiquement toutes les minutes par Jeedom
-  public static function cron() {}
-  */
+	* Fonction exécutée automatiquement toutes les minutes par Jeedom
+	public static function cron() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
-  public static function cron5() {}
-  */
+	* Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
+	public static function cron5() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement toutes les 10 minutes par Jeedom
-  public static function cron10() {}
-  */
+	* Fonction exécutée automatiquement toutes les 10 minutes par Jeedom
+	public static function cron10() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement toutes les 15 minutes par Jeedom
-  public static function cron15() {}
-  */
+	* Fonction exécutée automatiquement toutes les 15 minutes par Jeedom
+	public static function cron15() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement toutes les 30 minutes par Jeedom
-  public static function cron30() {}
-  */
+	* Fonction exécutée automatiquement toutes les 30 minutes par Jeedom
+	public static function cron30() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement toutes les heures par Jeedom
-  public static function cronHourly() {}
-  */
+	* Fonction exécutée automatiquement toutes les heures par Jeedom
+	public static function cronHourly() {}
+	*/
 
 	/*
-  * Fonction exécutée automatiquement tous les jours par Jeedom
-  public static function cronDaily() {}
-  */
+	* Fonction exécutée automatiquement tous les jours par Jeedom
+	public static function cronDaily() {}
+	*/
 
 	/*     * *********************Méthodes d'instance************************* */
 
@@ -165,23 +114,7 @@ class speedtestByOokla extends eqLogic
 	{
 		$this->setIsEnable(1);
 		$this->setIsVisible(1);
-		$this->setConfiguration('template', 'coreWidget');
-		$this->setDisplay('advanceWidgetParametercolorWidgetNamedashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercolorWidgetNamemobile-default', 1);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamedashboard-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamedashboard', '#26273b');
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamemobile-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgWidgetNamemobile', '#26273b');
-		$this->setDisplay('advanceWidgetParametercolorEqLogicdashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercolorEqLogicmobile-default', 1);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicdashboard-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicdashboard', '#141526');
-		$this->setDisplay('advanceWidgetParameterbgEqLogicmobile-default', 0);
-		$this->setDisplay('advanceWidgetParameterbgEqLogicmobile', '#141526');
-		$this->setDisplay('advanceWidgetParametercmdNamedashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametercmdNamemobile-default', 1);
-		$this->setDisplay('advanceWidgetParametertimeWidgetdashboard-default', 1);
-		$this->setDisplay('advanceWidgetParametertimeWidgetmobile-default', 1);
+		$this->setCategory('light', 1);
 	}
 
 	// Fonction exécutée automatiquement après la création de l'équipement
@@ -202,6 +135,12 @@ class speedtestByOokla extends eqLogic
 	// Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement
 	public function preSave()
 	{
+		if (empty($this->getConfiguration('port'))) {
+			$this->setConfiguration('port', 19444);
+		}
+		if (empty($this->getConfiguration('instanceNumber'))) {
+			$this->setConfiguration('instanceNumber', 0);
+		}
 	}
 
 	// Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
@@ -218,23 +157,42 @@ class speedtestByOokla extends eqLogic
 			$cmd = $this->getCmd(null, $command['logicalId']);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Command [' . $command['name'] . '] created');
-				$cmd = (new speedtestByOoklaCmd);
-				$cmd->setEqLogic_id($this->getId());
-				$cmd->setName($command['name']);
+				$cmd = (new hyperionNGCmd);
 				$cmd->setLogicalId($command['logicalId']);
+				if (isset($command['generic_type'])) {
+					$cmd->setGeneric_type($command['generic_type']);
+				}
+				$cmd->setName($command['name']);
+				$cmd->setOrder($order++);
 				$cmd->setType($command['type']);
 				$cmd->setSubType($command['subType']);
-				$cmd->setOrder($order++);
+				$cmd->setEqLogic_id($this->getId());
+				// if (isset($command['isHistorized'])) {
+				// 	$cmd->setIsHistorized($command['isHistorized']);
+				// }
 				if (isset($command['unite'])) {
 					$cmd->setUnite($command['unite']);
-				}
-				if (isset($command['isHistorized'])) {
-					$cmd->setIsHistorized($command['isHistorized']);
 				}
 				if (isset($command['configuration'])) {
 					foreach ($command['configuration'] as $key => $value) {
 						$cmd->setConfiguration($key, $value);
 					}
+				}
+				if (isset($command['template'])) {
+					foreach ($command['template'] as $key => $value) {
+						$cmd->setTemplate($key, $value);
+					}
+				}
+				if (isset($command['display'])) {
+					foreach ($command['display'] as $key => $value) {
+						$cmd->setDisplay($key, $value);
+					}
+				}
+				if (isset($command['value'])) {
+					$cmd->setValue($this->getCmd(null, $command['value'])->getId());
+				}
+				if (isset($command['isVisible'])) {
+					$cmd->setIsVisible($command['isVisible']);
 				}
 				$cmd->save();
 			}
@@ -252,119 +210,150 @@ class speedtestByOokla extends eqLogic
 	}
 
 	/*
-  * Permet de crypter/décrypter automatiquement des champs de configuration des équipements
-  * Exemple avec le champ "Mot de passe" (password)
-  public function decrypt() {
-    $this->setConfiguration('password', utils::decrypt($this->getConfiguration('password')));
-  }
-  public function encrypt() {
-    $this->setConfiguration('password', utils::encrypt($this->getConfiguration('password')));
-  }
-  */
-
-	// Permet de modifier l'affichage du widget (également utilisable par les commandes)
-	public function toHtml($_version = 'dashboard')
-	{
-		if ($this->getConfiguration('template') == 'coreWidget') {
-			return parent::toHtml($_version);
-		}
-		$replace = $this->preToHtml($_version);
-		if (!is_array($replace)) {
-			return $replace;
-		}
-		$version = jeedom::versionAlias($_version);
-		foreach (($this->getCmd('info')) as $cmd) {
-			$logical = $cmd->getLogicalId();
-			$replace['#' . $logical . '_Id#'] = $cmd->getId();
-			if ($logical == 'server') {
-				$server = str_replace(' - ', '<br>', $cmd->execCmd());
-				$servers = explode('(', $server);
-				$server = rtrim($servers[0]);
-				$replace['#' . $logical . '_Value#'] = $server;
-			} else {
-				$replace['#' . $logical . '_Value#'] = $cmd->execCmd();
-			}
-			$replace['#' . $logical . '_ValueDate#'] = $cmd->getValueDate();
-			$replace['#' . $logical . '_CollectDate#'] = $cmd->getCollectDate();
-			$replace['#' . $logical . '_Unite#'] = $cmd->getUnite();
-			$replace['#' . $logical . '_Name#'] = $cmd->getName();
-		}
-		if ($version == 'dashboard') {
-			$replace['#cmdName#'] = $this->getDisplay('advanceWidgetParametercmdNamedashboard-default');
-			$replace['#timeWidget#'] = $this->getDisplay('advanceWidgetParametertimeWidgetdashboard-default');
-		} else {
-			$replace['#cmdName#'] = $this->getDisplay('advanceWidgetParametercmdNamemobile-default');
-			$replace['#timeWidget#'] = $this->getDisplay('advanceWidgetParametertimeWidgetmobile-default');
-		}
-		$html = template_replace($replace, getTemplate('core', $version, 'speedtestByOoklaWithoutGauges', __CLASS__));
-		$html = translate::exec($html, 'plugins/speedtestByOokla/core/template/' . $version . '/speedtestByOoklaWithoutGauges.html');
-		$html = $this->postToHtml($_version, $html);
-		return $html;
-		// return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'speedtestByOoklaWithoutGauges', __CLASS__)));
+	* Permet de crypter/décrypter automatiquement des champs de configuration des équipements
+	* Exemple avec le champ "Mot de passe" (password)
+	public function decrypt() {
+		$this->setConfiguration('password', utils::decrypt($this->getConfiguration('password')));
 	}
+	public function encrypt() {
+		$this->setConfiguration('password', utils::encrypt($this->getConfiguration('password')));
+	}
+	*/
 
 	/*
-  * Permet de déclencher une action avant modification d'une variable de configuration du plugin
-  * Exemple avec la variable "param3"
-  public static function preConfig_param3( $value ) {
-    // do some checks or modify on $value
-    return $value;
-  }
-  */
+	* Permet de modifier l'affichage du widget (également utilisable par les commandes)
+	public function toHtml($_version = 'dashboard') {}
+	*/
 
 	/*
-  * Permet de déclencher une action après modification d'une variable de configuration du plugin
-  * Exemple avec la variable "param3"
-  public static function postConfig_param3($value) {
-    // no return value
-  }
-  */
+	* Permet de déclencher une action avant modification d'une variable de configuration du plugin
+	* Exemple avec la variable "param3"
+	public static function preConfig_param3( $value ) {
+		// do some checks or modify on $value
+		return $value;
+	}
+	*/
 
-	public function refreshData()
+	/*
+	* Permet de déclencher une action après modification d'une variable de configuration du plugin
+	* Exemple avec la variable "param3"
+	public static function postConfig_param3($value) {
+		// no return value
+	}
+	*/
+
+	public function socket($dataInstance, $dataCommand, $dataServerinfo)
 	{
 		if ($this->getIsEnable() == 1) {
-			if ($this->getConfiguration('serverId') == '') {
-				$cmd = 'sudo /usr/bin/speedtest --accept-license --accept-gdpr --format=json';
-			} else {
-				$cmd = 'sudo /usr/bin/speedtest --accept-license --accept-gdpr --format=json --server-id=' . $this->getConfiguration('serverId');
+			$create = socket_create(AF_INET, SOCK_STREAM, 0);
+			if ($create == false) {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_create() : ' . socket_strerror(socket_last_error()));
 			}
-			log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $cmd : ' . $cmd);
-			$speedtest = shell_exec($cmd);
-			if ($speedtest == false || $speedtest == null) {
-				$speedtest = shell_exec($cmd . ' 2>&1');
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . $speedtest);
-				$speedtests = explode("\n", rtrim($speedtest));
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtests : ' . print_r($speedtests, true));
-				foreach ($speedtests as $speedtest) {
-					if ($this->getConfiguration('disableError') != 1) {
-						log::add(__CLASS__, 'error', $this->getHumanName() . ' : Error shell_exec() : ' . $speedtest);
+			$connect = socket_connect($create, $this->getConfiguration('ipAdress'), $this->getConfiguration('port'));
+			if ($connect == false) {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_connect() : ' . socket_strerror(socket_last_error()));
+			}
+			if (!empty($dataInstance)) {
+				$encodeInstance = json_encode($dataInstance) . "\n";
+				$writeInstance = socket_write($create, $encodeInstance, strlen($encodeInstance));
+				if ($writeInstance === false) {
+					log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeInstance : ' . $encodeInstance);
+					$readInstance = socket_read($create, 128, PHP_NORMAL_READ);
+					if ($readInstance == false) {
+						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
 					} else {
-						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Error shell_exec() : ' . $speedtest);
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readInstance : ' . $readInstance);
 					}
 				}
-			} else {
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . $speedtest);
-				$speedtest = json_decode($speedtest, true);
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $speedtest : ' . print_r($speedtest, true));
-				$this->checkAndUpdateCmd('download', $speedtest['download']['bandwidth']);
-				$this->checkAndUpdateCmd('upload', $speedtest['upload']['bandwidth']);
-				$this->checkAndUpdateCmd('ping', $speedtest['ping']['latency']);
-				$this->checkAndUpdateCmd('isp', $speedtest['isp']);
-				$this->checkAndUpdateCmd('internalIp', $speedtest['interface']['internalIp']);
-				$this->checkAndUpdateCmd('externalIp', $speedtest['interface']['externalIp']);
-				$this->checkAndUpdateCmd('server', $speedtest['server']['name'] . ' - ' . $speedtest['server']['location'] . ' (id: ' . $speedtest['server']['id'] . ')');
-				$this->checkAndUpdateCmd('timestamp', date('Y-m-d H:i:s', strtotime($speedtest['timestamp'])));
-				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Updated commands');
-				$serverList = shell_exec('sudo /usr/bin/speedtest --servers');
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $serverList : ' . $serverList);
-				$serverList = str_replace('Closest servers:' . "\n" . "\n", '', $serverList);
-				$serverLists = explode("\n", rtrim($serverList));
-				log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $serverLists : ' . print_r($serverLists, true));
-				foreach ($serverLists as $server) {
-					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $server : ' . $server);
+			}
+			if (!empty($dataCommand)) {
+				$encodeCommand = json_encode($dataCommand) . "\n";
+				$writeCommand = socket_write($create, $encodeCommand, strlen($encodeCommand));
+				if ($writeCommand === false) {
+					log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeCommand : ' . $encodeCommand);
+					$readCommand = socket_read($create, 128, PHP_NORMAL_READ);
+					if ($readCommand == false) {
+						log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
+					} else {
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readCommand : ' . $readCommand);
+					}
 				}
-				$this->setConfiguration('serverList', $serverList);
-				$this->save();
+			}
+			sleep(1);
+			if (!empty($dataServerinfo)) {
+				$encodeServerinfo = json_encode($dataServerinfo) . "\n";
+				$writeServerinfo = socket_write($create, $encodeServerinfo, strlen($encodeServerinfo));
+				if ($writeServerinfo === false) {
+					log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+				} else {
+					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeServerinfo : ' . $encodeServerinfo);
+					$readServerinfo = socket_read($create, 32768, PHP_NORMAL_READ);
+					if ($readServerinfo == false) {
+						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
+					} else {
+						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readServerinfo : ' . $readServerinfo);
+					}
+				}
+			}
+			socket_close($create);
+			return $readServerinfo;
+		}
+	}
+
+	public function refreshData($readServerinfo)
+	{
+		if ($this->getIsEnable() == 1) {
+			if (!empty($readServerinfo)) {
+				$decodeServerinfo = json_decode($readServerinfo, true);
+				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
+				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
+				$this->checkAndUpdateCmd('connectionState', 1);
+				if ($colorState != '#000000' || !empty($effectState)) {
+					$this->checkAndUpdateCmd('ambilightState', 1);
+				} else {
+					$this->checkAndUpdateCmd('ambilightState', 0);
+				}
+				$this->checkAndUpdateCmd('colorState', $colorState);
+				if (!empty($effectState)) {
+					$this->checkAndUpdateCmd('effectState', $effectState);
+				} else {
+					$this->checkAndUpdateCmd('effectState', '');
+				}
+				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
+				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
+				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
+				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
+				$this->checkAndUpdateCmd('blackBorderState', $decodeServerinfo['info']['components'][2]['enabled']);
+				$this->checkAndUpdateCmd('forwarderState', $decodeServerinfo['info']['components'][3]['enabled']);
+				$this->checkAndUpdateCmd('boblightServerState', $decodeServerinfo['info']['components'][4]['enabled']);
+				$this->checkAndUpdateCmd('grabberState', $decodeServerinfo['info']['components'][5]['enabled']);
+				$this->checkAndUpdateCmd('v4lState', $decodeServerinfo['info']['components'][6]['enabled']);
+				$this->checkAndUpdateCmd('audioState', $decodeServerinfo['info']['components'][7]['enabled']);
+				$this->checkAndUpdateCmd('ledDeviceState', $decodeServerinfo['info']['components'][8]['enabled']);
+				foreach ($decodeServerinfo['info']['effects'] as $effects) {
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects : ' . print_r($effects, true));
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'file\'] : ' . $effects['file']);
+					// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $effects[\'name\'] : ' . $effects['name']);
+					if (substr($effects['file'], 0, 1) != ':') {
+						$listValue .= $effects['name'] . '|' . $effects['name'] . ';';
+					}
+				}
+				$listValue = rtrim($listValue, ';');
+				// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $listValue : ' . $listValue);
+				$cmd = $this->getCmd(null, 'userEffects');
+				$listValueOld = $cmd->getConfiguration('listValue');
+				if ($listValue != $listValueOld) {
+					$cmd->setConfiguration('listValue', $listValue);
+					$cmd->save();
+				}
+				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Commandes mises à jour');
+			} else {
+				log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Echec de la connexion');
+				$this->checkAndUpdateCmd('connectionState', 0);
 			}
 		}
 	}
@@ -372,13 +361,13 @@ class speedtestByOokla extends eqLogic
 	/*     * **********************Getteur Setteur*************************** */
 }
 
-class speedtestByOoklaCmd extends cmd
+class hyperionNGCmd extends cmd
 {
 	/*     * *************************Attributs****************************** */
 
 	/*
-  public static $_widgetPossibility = array();
-  */
+	public static $_widgetPossibility = array();
+	*/
 
 	/*     * ***********************Methode static*************************** */
 
@@ -386,18 +375,116 @@ class speedtestByOoklaCmd extends cmd
 	/*     * *********************Methode d'instance************************* */
 
 	/*
-  * Permet d'empêcher la suppression des commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
-  public function dontRemoveCmd() {
-    return true;
-  }
-  */
+	* Permet d'empêcher la suppression des commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
+	public function dontRemoveCmd() {
+		return true;
+	}
+	*/
 
 	// Exécution d'une commande
 	public function execute($_options = array())
 	{
-		if ($this->getLogicalId() == 'refresh') {
-			$this->getEqLogic()->refreshData();
+		$dataInstance = array();
+		$dataCommand = array();
+		$dataServerinfo = array();
+		if (intval($this->getEqLogic()->getConfiguration('instanceNumber')) != 0) {
+			$dataInstance['command'] = 'instance';
+			$dataInstance['subcommand'] = 'switchTo';
+			$dataInstance['instance'] = intval($this->getEqLogic()->getConfiguration('instanceNumber'));
 		}
+		if ($this->getLogicalId() == 'color') {
+			$dataCommand['command'] = 'color';
+			$dataCommand['color'] = hex2rgb($_options['color']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'providedEffects') {
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $_options['select']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'userEffects') {
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $_options['select']);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'brightness') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('brightness' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'backlightThreshold') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'hyperionOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);
+		} else if ($this->getLogicalId() == 'hyperionOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => false);
+		} else if ($this->getLogicalId() == 'smoothingOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'SMOOTHING', 'state' => true);
+		} else if ($this->getLogicalId() == 'smoothingOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'SMOOTHING', 'state' => false);
+		} else if ($this->getLogicalId() == 'blackBorderOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BLACKBORDER', 'state' => true);
+		} else if ($this->getLogicalId() == 'blackBorderOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BLACKBORDER', 'state' => false);
+		} else if ($this->getLogicalId() == 'forwarderOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'FORWARDER', 'state' => true);
+		} else if ($this->getLogicalId() == 'forwarderOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'FORWARDER', 'state' => false);
+		} else if ($this->getLogicalId() == 'boblightServerOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BOBLIGHTSERVER', 'state' => true);
+		} else if ($this->getLogicalId() == 'boblightServerOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'BOBLIGHTSERVER', 'state' => false);
+		} else if ($this->getLogicalId() == 'grabberOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'GRABBER', 'state' => true);
+		} else if ($this->getLogicalId() == 'grabberOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'GRABBER', 'state' => false);
+		} else if ($this->getLogicalId() == 'v4lOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'V4L', 'state' => true);
+		} else if ($this->getLogicalId() == 'v4lOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'V4L', 'state' => false);
+		} else if ($this->getLogicalId() == 'audioOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'AUDIO', 'state' => true);
+		} else if ($this->getLogicalId() == 'audioOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'AUDIO', 'state' => false);
+		} else if ($this->getLogicalId() == 'ledDeviceOn') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'LEDDEVICE', 'state' => true);
+		} else if ($this->getLogicalId() == 'ledDeviceOff') {
+			$dataCommand['command'] = 'componentstate';
+			$dataCommand['componentstate'] = array('component' => 'LEDDEVICE', 'state' => false);
+		} else if ($this->getLogicalId() == 'randomColor') {
+			$dataCommand['command'] = 'color';
+			$dataCommand['color'] = array(rand(0, 255), rand(0, 255), rand(0, 255));
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'randomEffect') {
+			$randomEffect = array('Aucun', 'Atomic swirl', 'Blue mood blobs', 'Breath', 'Candle', 'Cinema brighten lights', 'Cinema dim lights', 'Cold mood blobs', 'Collision', 'Color traces', 'Double swirl', 'Fire', 'Flags Germany/Sweden', 'Full color mood blobs', 'Green mood blobs', 'Knight rider', 'Led Test', 'Light clock', 'Lights', 'Notify blue', 'Pac-Man', 'Plasma', 'Police Lights Single', 'Police Lights Solid', 'Rainbow mood', 'Rainbow swirl', 'Rainbow swirl fast', 'Random', 'Red mood blobs', 'Sea waves', 'Snake', 'Sparks', 'Strobe red', 'Strobe white', 'System Shutdown', 'Trails', 'Trails color', 'Warm mood blobs', 'Waves with Color', 'X-Mas');
+			$dataCommand['command'] = 'effect';
+			$dataCommand['effect'] = array('name' => $randomEffect[array_rand($randomEffect)]);
+			$dataCommand['priority'] = 50;
+			$dataCommand['origin'] = 'Jeedom';
+		} else if ($this->getLogicalId() == 'reset') {
+			$dataCommand['command'] = 'clear';
+			$dataCommand['priority'] = -1;
+		}
+		$dataServerinfo['command'] = 'serverinfo';
+		$readServerinfo = $this->getEqLogic()->socket($dataInstance, $dataCommand, $dataServerinfo);
+		$this->getEqLogic()->refreshData($readServerinfo);
 	}
 
 	/*     * **********************Getteur Setteur*************************** */
