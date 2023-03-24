@@ -480,7 +480,7 @@ class hyperionNGCmd extends cmd
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'cinemaBrightenLights') {
 			$dataCommand['command'] = 'effect';
-			$dataCommand['effect'] = 'Cinema brighten lights';
+			$dataCommand['effect'] = array('name' => 'Cinema brighten lights');
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'reset') {
