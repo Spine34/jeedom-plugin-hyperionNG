@@ -480,7 +480,7 @@ class hyperionNGCmd extends cmd
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'ambilightOn') {
 			$dataCommand['command'] = 'color';
-			$dataCommand['effect'] = array(238, 173, 47);
+			$dataCommand['color'] = array(238, 173, 47);
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'reset') {
