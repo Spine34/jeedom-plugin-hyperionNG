@@ -386,9 +386,9 @@
 		"subType": "other"
 	},
 	{
-		"logicalId": "cinemaBrightenLights",
+		"logicalId": "ambilightOn",
 		"generic_type": "LIGHT_ON",
-		"name": "Cinema brighten lights",
+		"name": "Ambilight On",
 		"type": "action",
 		"subType": "other"
 	},
