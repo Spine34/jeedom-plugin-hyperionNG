@@ -311,8 +311,9 @@ class hyperionNG extends eqLogic
 				$decodeServerinfo = json_decode($readServerinfo, true);
 				$colorState = rgb2hex($decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][0], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][1], $decodeServerinfo['info']['activeLedColor'][0]['RGB Value'][2]);
 				$effectState = $decodeServerinfo['info']['activeEffects'][0]['name'];
+				$priorities = $decodeServerinfo['info']['priorities'];
 				$this->checkAndUpdateCmd('connectionState', 1);
-				if ($colorState != '#000000' || !empty($effectState)) {
+				if ($colorState != '#000000' || !empty($effectState) || !empty($priorities)) {
 					$this->checkAndUpdateCmd('ambilightState', 1);
 				} else {
 					$this->checkAndUpdateCmd('ambilightState', 0);
