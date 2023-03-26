@@ -396,16 +396,25 @@ class hyperionNGCmd extends cmd
 		if ($this->getLogicalId() == 'color') {
 			$dataCommand['command'] = 'color';
 			$dataCommand['color'] = hex2rgb($_options['color']);
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'providedEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'userEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'brightness') {
@@ -473,25 +482,31 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'randomColor') {
 			$dataCommand['command'] = 'color';
 			$dataCommand['color'] = array(rand(0, 255), rand(0, 255), rand(0, 255));
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'randomEffect') {
 			$randomEffect = array('Aucun', 'Atomic swirl', 'Blue mood blobs', 'Breath', 'Candle', 'Cinema brighten lights', 'Cinema dim lights', 'Cold mood blobs', 'Collision', 'Color traces', 'Double swirl', 'Fire', 'Flags Germany/Sweden', 'Full color mood blobs', 'Green mood blobs', 'Knight rider', 'Led Test', 'Light clock', 'Lights', 'Notify blue', 'Pac-Man', 'Plasma', 'Police Lights Single', 'Police Lights Solid', 'Rainbow mood', 'Rainbow swirl', 'Rainbow swirl fast', 'Random', 'Red mood blobs', 'Sea waves', 'Snake', 'Sparks', 'Strobe red', 'Strobe white', 'System Shutdown', 'Trails', 'Trails color', 'Warm mood blobs', 'Waves with Color', 'X-Mas');
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $randomEffect[array_rand($randomEffect)]);
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'ambilightOn') {
 			$dataCommand['command'] = 'color';
 			$dataCommand['color'] = array(238, 173, 47);
+			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
+			}
 			$dataCommand['priority'] = 50;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'reset') {
 			$dataCommand['command'] = 'clear';
 			$dataCommand['priority'] = -1;
-		}
-		if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
-			$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 		}
 		$dataServerinfo['command'] = 'serverinfo';
 		$readServerinfo = $this->getEqLogic()->socket($dataInstance, $dataCommand, $dataServerinfo);
