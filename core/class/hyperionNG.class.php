@@ -401,12 +401,12 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'providedEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'userEffects') {
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $_options['select']);
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'brightness') {
 			$dataCommand['command'] = 'adjustment';
@@ -414,6 +414,8 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'backlightThreshold') {
 			$dataCommand['command'] = 'adjustment';
 			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'duration') {
+			$this->getEqLogic()->checkAndUpdateCmd('durationState', intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'hyperionOn') {
 			$dataCommand['command'] = 'componentstate';
 			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);
@@ -477,7 +479,7 @@ class hyperionNGCmd extends cmd
 			$randomEffect = array('Aucun', 'Atomic swirl', 'Blue mood blobs', 'Breath', 'Candle', 'Cinema brighten lights', 'Cinema dim lights', 'Cold mood blobs', 'Collision', 'Color traces', 'Double swirl', 'Fire', 'Flags Germany/Sweden', 'Full color mood blobs', 'Green mood blobs', 'Knight rider', 'Led Test', 'Light clock', 'Lights', 'Notify blue', 'Pac-Man', 'Plasma', 'Police Lights Single', 'Police Lights Solid', 'Rainbow mood', 'Rainbow swirl', 'Rainbow swirl fast', 'Random', 'Red mood blobs', 'Sea waves', 'Snake', 'Sparks', 'Strobe red', 'Strobe white', 'System Shutdown', 'Trails', 'Trails color', 'Warm mood blobs', 'Waves with Color', 'X-Mas');
 			$dataCommand['command'] = 'effect';
 			$dataCommand['effect'] = array('name' => $randomEffect[array_rand($randomEffect)]);
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = 49;
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'ambilightOn') {
 			$dataCommand['command'] = 'color';
@@ -487,6 +489,9 @@ class hyperionNGCmd extends cmd
 		} else if ($this->getLogicalId() == 'reset') {
 			$dataCommand['command'] = 'clear';
 			$dataCommand['priority'] = -1;
+		}
+		if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
+			$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 		}
 		$dataServerinfo['command'] = 'serverinfo';
 		$readServerinfo = $this->getEqLogic()->socket($dataInstance, $dataCommand, $dataServerinfo);
