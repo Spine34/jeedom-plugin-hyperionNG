@@ -272,12 +272,12 @@ class hyperionNG extends eqLogic
 				$encodeCommand = json_encode($dataCommand) . "\n";
 				$writeCommand = socket_write($create, $encodeCommand, strlen($encodeCommand));
 				if ($writeCommand === false) {
-					log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
+					log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_write() : ' . socket_strerror(socket_last_error()));
 				} else {
 					log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $encodeCommand : ' . $encodeCommand);
 					$readCommand = socket_read($create, 128, PHP_NORMAL_READ);
 					if ($readCommand == false) {
-						log::add(__CLASS__, 'error', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
+						log::add(__CLASS__, 'warning', $this->getHumanName() . ' : Erreur socket_read() : ' . socket_strerror(socket_last_error()));
 					} else {
 						log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $readCommand : ' . $readCommand);
 					}
