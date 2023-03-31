@@ -81,6 +81,13 @@
 		"isVisible": 0
 	},
 	{
+		"logicalId": "backlightColoredState",
+		"name": "Etat rétroéclairage coloré",
+		"type": "info",
+		"subType": "binary",
+		"isVisible": 0
+	},
+	{
 		"logicalId": "hyperionState",
 		"name": "Etat Hyperion",
 		"type": "info",
@@ -216,6 +223,28 @@
 			"mobile": "core::value"
 		},
 		"value": "priorityState"
+	},
+	{
+		"logicalId": "backlightColoredOn",
+		"name": "Rétroéclairage coloré On",
+		"type": "action",
+		"subType": "other",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		},
+		"value": "backlightColoredState"
+	},
+	{
+		"logicalId": "backlightColoredOff",
+		"name": "Rétroéclairage coloré Off",
+		"type": "action",
+		"subType": "other",
+		"template": {
+			"dashboard": "core::binarySwitch",
+			"mobile": "core::binarySwitch"
+		},
+		"value": "backlightColoredState"
 	},
 	{
 		"logicalId": "hyperionOn",

@@ -326,6 +326,7 @@ class hyperionNG extends eqLogic
 				}
 				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
 				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
+				$this->checkAndUpdateCmd('backlightColoredState', $decodeServerinfo['info']['adjustment'][0]['backlightColored']);
 				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
 				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
 				$this->checkAndUpdateCmd('blackBorderState', $decodeServerinfo['info']['components'][2]['enabled']);
@@ -427,6 +428,12 @@ class hyperionNGCmd extends cmd
 			$this->getEqLogic()->checkAndUpdateCmd('durationState', intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'priority') {
 			$this->getEqLogic()->checkAndUpdateCmd('priorityState', intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'backlightColoredOn') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightColored' => true);
+		} else if ($this->getLogicalId() == 'backlightColoredOff') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightColored' => false);
 		} else if ($this->getLogicalId() == 'hyperionOn') {
 			$dataCommand['command'] = 'componentstate';
 			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);
