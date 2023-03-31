@@ -439,8 +439,10 @@ class hyperionNGCmd extends cmd
 			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'duration') {
 			$this->getEqLogic()->checkAndUpdateCmd('durationState', intval($_options['slider']));
+			return;
 		} else if ($this->getLogicalId() == 'priority') {
 			$this->getEqLogic()->checkAndUpdateCmd('priorityState', intval($_options['slider']));
+			return;
 		} else if ($this->getLogicalId() == 'backlightColoredOn') {
 			$dataCommand['command'] = 'adjustment';
 			$dataCommand['adjustment'] = array('backlightColored' => true);
