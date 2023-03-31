@@ -107,6 +107,19 @@ class hyperionNG extends eqLogic
 	public static function cronDaily() {}
 	*/
 
+	public static function templateWidget()
+	{
+		$return = array('info' => array('string' => array()));
+		$return['action']['other']['toto'] = array(
+			'template' => 'tmpliconline',
+			'replace' => array(
+				'#_icon_on_#' => "<i class='far fa-check-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>",
+				'#_icon_off_#' => "<i class='far fa-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>"
+			)
+		);
+		return $return;
+	}
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	// Fonction exécutée automatiquement avant la création de l'équipement
@@ -326,6 +339,7 @@ class hyperionNG extends eqLogic
 				}
 				$this->checkAndUpdateCmd('brightnessState', $decodeServerinfo['info']['adjustment'][0]['brightness']);
 				$this->checkAndUpdateCmd('backlightThresholdState', $decodeServerinfo['info']['adjustment'][0]['backlightThreshold']);
+				$this->checkAndUpdateCmd('backlightColoredState', $decodeServerinfo['info']['adjustment'][0]['backlightColored']);
 				$this->checkAndUpdateCmd('hyperionState', $decodeServerinfo['info']['components'][0]['enabled']);
 				$this->checkAndUpdateCmd('smoothingState', $decodeServerinfo['info']['components'][1]['enabled']);
 				$this->checkAndUpdateCmd('blackBorderState', $decodeServerinfo['info']['components'][2]['enabled']);
@@ -399,7 +413,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'providedEffects') {
 			$dataCommand['command'] = 'effect';
@@ -407,7 +421,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 49;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'userEffects') {
 			$dataCommand['command'] = 'effect';
@@ -415,7 +429,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 49;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'brightness') {
 			$dataCommand['command'] = 'adjustment';
@@ -425,6 +439,14 @@ class hyperionNGCmd extends cmd
 			$dataCommand['adjustment'] = array('backlightThreshold' => intval($_options['slider']));
 		} else if ($this->getLogicalId() == 'duration') {
 			$this->getEqLogic()->checkAndUpdateCmd('durationState', intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'priority') {
+			$this->getEqLogic()->checkAndUpdateCmd('priorityState', intval($_options['slider']));
+		} else if ($this->getLogicalId() == 'backlightColoredOn') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightColored' => true);
+		} else if ($this->getLogicalId() == 'backlightColoredOff') {
+			$dataCommand['command'] = 'adjustment';
+			$dataCommand['adjustment'] = array('backlightColored' => false);
 		} else if ($this->getLogicalId() == 'hyperionOn') {
 			$dataCommand['command'] = 'componentstate';
 			$dataCommand['componentstate'] = array('component' => 'ALL', 'state' => true);
@@ -485,7 +507,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'randomEffect') {
 			$randomEffect = array('Aucun', 'Atomic swirl', 'Blue mood blobs', 'Breath', 'Candle', 'Cinema brighten lights', 'Cinema dim lights', 'Cold mood blobs', 'Collision', 'Color traces', 'Double swirl', 'Fire', 'Flags Germany/Sweden', 'Full color mood blobs', 'Green mood blobs', 'Knight rider', 'Led Test', 'Light clock', 'Lights', 'Notify blue', 'Pac-Man', 'Plasma', 'Police Lights Single', 'Police Lights Solid', 'Rainbow mood', 'Rainbow swirl', 'Rainbow swirl fast', 'Random', 'Red mood blobs', 'Sea waves', 'Snake', 'Sparks', 'Strobe red', 'Strobe white', 'System Shutdown', 'Trails', 'Trails color', 'Warm mood blobs', 'Waves with Color', 'X-Mas');
@@ -494,7 +516,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 49;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'ambilightOn') {
 			$dataCommand['command'] = 'color';
@@ -502,7 +524,7 @@ class hyperionNGCmd extends cmd
 			if ((intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000) != 0) {
 				$dataCommand['duration'] = intval($this->getEqLogic()->getCmd(null, 'durationState')->execCmd()) * 1000;
 			}
-			$dataCommand['priority'] = 50;
+			$dataCommand['priority'] = intval($this->getEqLogic()->getCmd(null, 'priorityState')->execCmd());
 			$dataCommand['origin'] = 'Jeedom';
 		} else if ($this->getLogicalId() == 'reset') {
 			$dataCommand['command'] = 'clear';
