@@ -107,6 +107,19 @@ class hyperionNG extends eqLogic
 	public static function cronDaily() {}
 	*/
 
+	public static function templateWidget()
+	{
+		$return = array('info' => array('string' => array()));
+		$return['action']['other']['toto'] = array(
+			'template' => 'tmpliconline',
+			'replace' => array(
+				'#_icon_on_#' => "<i class='far fa-check-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>",
+				'#_icon_off_#' => "<i class='far fa-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>"
+			)
+		);
+		return $return;
+	}
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	// Fonction exécutée automatiquement avant la création de l'équipement
