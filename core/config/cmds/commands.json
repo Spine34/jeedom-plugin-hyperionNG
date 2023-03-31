@@ -73,6 +73,14 @@
 		"isVisible": 0
 	},
 	{
+		"logicalId": "priorityState",
+		"name": "Etat priorité",
+		"type": "info",
+		"subType": "numeric",
+		"unite": "s",
+		"isVisible": 0
+	},
+	{
 		"logicalId": "hyperionState",
 		"name": "Etat Hyperion",
 		"type": "info",
@@ -193,6 +201,21 @@
 			"mobile": "core::value"
 		},
 		"value": "durationState"
+	},
+	{
+		"logicalId": "priority",
+		"name": "Priorité",
+		"type": "action",
+		"subType": "slider",
+		"configuration": {
+			"minValue": 2,
+			"maxValue": 99
+		},
+		"template": {
+			"dashboard": "core::value",
+			"mobile": "core::value"
+		},
+		"value": "priorityState"
 	},
 	{
 		"logicalId": "hyperionOn",
