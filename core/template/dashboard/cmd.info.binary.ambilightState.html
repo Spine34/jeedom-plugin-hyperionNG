@@ -26,7 +26,7 @@
 
 				// < 4.4.0
 				let cmd2 = $('.cmd[data-cmd_id=#id#]')
-				if ('#_time_widget_#' == '1') {
+				if ('#time#' == 'duration' || '#time#' == 'date') {
 					jeedom.cmd.displayDuration(_options.valueDate, cmd2.find('.timeCmd'), '#time#')
 				} else {
 					cmd2.find('.timeCmd').remove()
