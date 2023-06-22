@@ -28,7 +28,7 @@
 		"display": {
 			"forceReturnLineAfter": 1,
 			"parameters": {
-				"_time_widget_": 1
+				"time": "duration"
 			}
 		}
 	},
