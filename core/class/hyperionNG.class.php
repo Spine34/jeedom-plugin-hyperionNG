@@ -110,7 +110,7 @@ class hyperionNG extends eqLogic
 	public static function templateWidget()
 	{
 		$return = array('info' => array('string' => array()));
-		$return['action']['other']['toto'] = array(
+		$return['action']['other']['checkbox'] = array(
 			'template' => 'tmpliconline',
 			'replace' => array(
 				'#_icon_on_#' => "<i class='far fa-check-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>",
