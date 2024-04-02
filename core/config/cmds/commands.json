@@ -230,8 +230,8 @@
 		"type": "action",
 		"subType": "other",
 		"template": {
-			"dashboard": "hyperionNG::toto",
-			"mobile": "hyperionNG::toto"
+			"dashboard": "hyperionNG::checkbox",
+			"mobile": "hyperionNG::checkbox"
 		},
 		"value": "backlightColoredState"
 	},
@@ -241,8 +241,8 @@
 		"type": "action",
 		"subType": "other",
 		"template": {
-			"dashboard": "hyperionNG::toto",
-			"mobile": "hyperionNG::toto"
+			"dashboard": "hyperionNG::checkbox",
+			"mobile": "hyperionNG::checkbox"
 		},
 		"value": "backlightColoredState"
 	},
