@@ -160,13 +160,10 @@ class hyperionNG extends eqLogic
 	public function postSave()
 	{
 		$order = 0;
-		if (!is_file(dirname(__FILE__) . '/../config/cmds/commands.json')) {
-			log::add(__CLASS__, 'error', $this->getHumanName() . ' : Command creation file not found');
-		}
 		$commands = json_decode(file_get_contents(dirname(__FILE__) . '/../config/cmds/commands.json'), true);
-		// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $commands : ' . print_r($commands, true));
+		// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $commands : ' . json_encode($commands));
 		foreach ($commands as $command) {
-			// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $command : ' . print_r($command, true));
+			// log::add(__CLASS__, 'debug', $this->getHumanName() . ' : $command : ' . json_encode($command));
 			$cmd = $this->getCmd(null, $command['logicalId']);
 			if (!is_object($cmd)) {
 				log::add(__CLASS__, 'info', $this->getHumanName() . ' : Command [' . $command['name'] . '] created');
