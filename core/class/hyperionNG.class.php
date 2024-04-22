@@ -113,8 +113,8 @@ class hyperionNG extends eqLogic
 		$return['action']['other']['checkbox'] = array(
 			'template' => 'tmpliconline',
 			'replace' => array(
-				'#_icon_on_#' => "<i class='far fa-check-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>",
-				'#_icon_off_#' => "<i class='far fa-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 3px;'></i>"
+				'#_icon_on_#' => "<i class='far fa-check-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 2px;'></i>",
+				'#_icon_off_#' => "<i class='far fa-square' style='font-size: 20px; margin-left: 5px; position: relative; top: 2px;'></i>"
 			)
 		);
 		return $return;

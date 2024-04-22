@@ -6,7 +6,7 @@
 	},
 	"licence": "AGPL",
 	"author": "Spine",
-	"require": "4.3",
+	"require": "4.4",
 	"category": "multimedia",
 	"hasDependency": false,
 	"hasOwnDeamon": false,
